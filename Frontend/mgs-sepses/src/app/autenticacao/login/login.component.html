@@ -1,0 +1,26 @@
+<div>
+
+  <div>
+
+    <div class="campos-autenticacao">
+      <form action="Post">
+        <input type="text" placeholder="CPF" [(ngModel)]="cpf" name="cpf">
+        <input type="password" placeholder="Senha" [(ngModel)]="senha" name="senha">
+      </form>
+    </div>
+
+    <div>
+      <a routerLink="/recuperar-senha">Alterar senha.</a>
+      <span (click)="esqueceuSenha()">Esqueceu a senha?</span>
+    </div>
+    <div>
+      <span>{{mensage}}</span>
+    </div>
+    <div>
+      <button (click)="login(cpf,senha)">Entrar</button>
+    </div>
+
+  </div>
+
+</div>
+<router-outlet></router-outlet>

@@ -10,7 +10,7 @@ import { Profissional } from '../models/profissional';
   providedIn: 'root'
 })
 export class LogService {
-  private readonly api = '';
+  private readonly api = 'http://localhost:8080/log';
   login: string = '';
   alterarSenha: string = '';
   log: Log[] = [];

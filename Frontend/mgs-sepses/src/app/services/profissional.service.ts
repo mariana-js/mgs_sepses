@@ -8,16 +8,18 @@ import { Profissional } from '../models/profissional';
   providedIn: 'root'
 })
 export class ProfissionalService {
-  private readonly api = '';
+  private readonly api = 'http://localhost:8080/profissional';
   profissional: Profissional[] = [];
   constructor(private readonly http: HttpClient) { }
 
-  getProfissional(): Observable<Profissional[]> {
-    return this.http.get<Profissional[]>(this.api);
+
+  getProfissional() {
+    return this.http.get<Profissional[]>(`${this.api}`);
   }
 
   buscarProfissional(cpf: string) {
     this.getProfissional();
+    console.log("Profissional "+this.getProfissional())
     const prof = this.profissional.find(profissional => profissional.cpf === cpf)
     return prof;
   }

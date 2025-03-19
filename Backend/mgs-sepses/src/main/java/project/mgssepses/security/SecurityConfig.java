@@ -2,23 +2,32 @@ package project.mgssepses.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfig {
     
-  
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+            .cors(cors -> cors.configure(http)) // ✅ Habilita CORS corretamente
+            .csrf(AbstractHttpConfigurer::disable) // ✅ Desativa CSRF
             .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll() // Permite todas as requisições sem autenticação
-            )
-            .csrf(csrf -> csrf.disable()) // Desativa proteção CSRF
-            .formLogin(login -> login.disable()) // Desativa formulário de login
-            .httpBasic(basic -> basic.disable()); // Desativa autenticação básica
+            
+            .requestMatchers(HttpMethod.GET, "/log/**").permitAll() // ✅ Permite GET sem autenticação
+            .requestMatchers(HttpMethod.POST, "/log/**").permitAll() // ✅ Permite POST sem autenticação
+            
+            .requestMatchers(HttpMethod.POST, "/profissional/**").permitAll() 
+            .requestMatchers(HttpMethod.GET, "/profissional/**").permitAll() // ✅ Permite GET sem autenticação
+            .requestMatchers(HttpMethod.PUT, "/profissional/**").permitAll() // ✅ Permite PUT sem autenticação
+            .requestMatchers(HttpMethod.DELETE, "/profissional/**").permitAll() // ✅ Permite DELETE sem autenticação
+            .anyRequest().authenticated() // 🔹 Outras rotas precisarão de autenticação
+            );
 
         return http.build();
-    }
+}
 }

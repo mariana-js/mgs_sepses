@@ -2,9 +2,13 @@
 
   <div class="container-autenticacao">
 
+    <div class="mensagem-autenticacao">
+      <span>{{mensage}}</span>
+    </div>
+
     <div class="form-autenticacao">
       <form action="Post">
-        <input type="text" placeholder="CPF" [(ngModel)]="cpf" name="cpf">
+        <input type="text" placeholder="CPF" [(ngModel)]="cpf" name="cpf" maxlength="11" (input)="cpf = cpf.slice(0, 11)">
         <input type="password" placeholder="Senha" [(ngModel)]="senha" name="senha">
       </form>
     </div>
@@ -13,14 +17,11 @@
       <a routerLink="/recuperar-senha">Alterar senha.</a>
       <span (click)="esqueceuSenha()">Esqueceu a senha?</span>
     </div>
-    <div class="mensagem-autenticacao">
-      <span>{{mensage}}</span>
-    </div>
     <div class="button-autenticacao">
       <button (click)="login(cpf,senha)">Entrar</button>
     </div>
-
   </div>
+
 
 </div>
 <router-outlet></router-outlet>

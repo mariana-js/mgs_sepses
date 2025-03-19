@@ -1,7 +1,7 @@
-import { v4 as uuidv4 } from 'uuid';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
 import { Profissional } from '../models/profissional';
 
 @Injectable({
@@ -12,34 +12,32 @@ export class ProfissionalService {
   profissional: Profissional[] = [];
   constructor(private readonly http: HttpClient) { }
 
-
-  getProfissional() {
+  getProfissional(): Observable<Profissional[]> {
     return this.http.get<Profissional[]>(`${this.api}`);
   }
 
-  buscarProfissional(cpf: string) {
-    this.getProfissional();
-    console.log("Profissional "+this.getProfissional())
-    const prof = this.profissional.find(profissional => profissional.cpf === cpf)
-    return prof;
+  buscarProfissional(cpf: string): Observable<Profissional | undefined> {
+    return this.getProfissional().pipe(
+      map(profissionais => profissionais.find(profissional => profissional.cpf === cpf))
+    );
   }
 
+
   addProfissional(profissional: Profissional): Observable<Profissional> {
-    profissional.id_profissional = uuidv4();
+    profissional.idProfissional = uuidv4();
     this.profissional.push(profissional);
     return this.http.post<Profissional>(this.api, profissional);
   }
 
-  updateProfisssional(profisional: Profissional): Observable<Profissional> {
-    const index = this.profissional.findIndex(i => i.id_profissional === profisional.id_profissional);
-    if (index !== -1) {
-      this.profissional[index] = profisional;
-    }
-    return this.http.put<Profissional>(`${this.api}/${profisional.id_profissional}`, profisional);
-  }
+  updateProfissional(profissional: Profissional): Observable<Profissional> {
+    console.log(profissional.idProfissional)
+    return this.http.put<Profissional>(`${this.api}/${profissional.idProfissional}`, profissional);
+}
+
+
 
   deleteProfissional(id: string): Observable<void> {
-    this.profissional = this.profissional.filter(prof => prof.id_profissional !== id);
+    this.profissional = this.profissional.filter(prof => prof.idProfissional !== id);
     return this.http.delete<void>(`${this.api}/${id}`)
   }
 }

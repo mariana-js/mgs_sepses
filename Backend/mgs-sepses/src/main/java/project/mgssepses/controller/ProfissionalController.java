@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ import project.mgssepses.service.ProfissionalService;
 
 @RestController
 @RequestMapping("/profissional")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ProfissionalController {
 	final ProfissionalService profissionalService;
     private final Logger log = LoggerFactory.getLogger(ProfissionalController.class);
@@ -43,14 +45,13 @@ public class ProfissionalController {
 	public ResponseEntity<Object> saveProfissional(@RequestBody @Valid ProfissionalDto profissionalDto) {
 		var profissional = new Profissional();
 		BeanUtils.copyProperties(profissionalDto, profissional);
-		// profissional.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));
 		return ResponseEntity.status(HttpStatus.CREATED).body(profissionalService.save(profissional));
 	}
 
 
 	@SuppressWarnings("rawtypes")
-	@GetMapping("/{id_profissional}")
-	public ResponseEntity getOneProfissional(@PathVariable(value = "id_profissional") UUID idprofissional) {
+	@GetMapping("/{idprofissional}")
+	public ResponseEntity getOneProfissional(@PathVariable(value = "idprofissional") UUID idprofissional) {
 		Optional<Profissional> profissionalOptional = profissionalService.findById(idprofissional);
 		if (!profissionalOptional.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Profissional not found.");
@@ -58,8 +59,8 @@ public class ProfissionalController {
 		return ResponseEntity.status(HttpStatus.OK).body(profissionalOptional.get());
 	}
 
-	@DeleteMapping("/{id_profissional}")
-	public ResponseEntity<Object> deleteProfissional(@PathVariable(value = "id_profissional") UUID idprofissional) {
+	@DeleteMapping("/{idprofissional}")
+	public ResponseEntity<Object> deleteProfissional(@PathVariable(value = "idprofissional") UUID idprofissional) {
 		Optional<Profissional> profissionalOptional = profissionalService.findById(idprofissional);
 		if (!profissionalOptional.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Profissional not found.");
@@ -73,8 +74,8 @@ public class ProfissionalController {
 		}
 	}
 
-	@PutMapping("/{id_profissional}")
-	public ResponseEntity<Object> updateProfissional(@PathVariable(value = "id_profissional") UUID idprofissional,
+	@PutMapping("/{idprofissional}")
+	public ResponseEntity<Object> updateProfissional(@PathVariable(value = "idprofissional") UUID idprofissional,
 		@RequestBody @Valid ProfissionalDto profissionalDto) {
 		Optional<Profissional> profissionalOptional = profissionalService.findById(idprofissional);
 		if (!profissionalOptional.isPresent()) {

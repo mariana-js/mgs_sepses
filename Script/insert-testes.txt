@@ -1,0 +1,27 @@
+INSERT INTO HOSPITAL (ID_HOSPITAL, RAZAO_SOCIAL, NOME_FANTASIA, CNPJ, ATIVO) VALUES
+    (gen_random_uuid(), 'Hospital São Lucas', 'São Lucas', '12345678000101', TRUE),
+    (gen_random_uuid(), 'Hospital Santa Maria', 'Santa Maria', '22345678000102', TRUE),
+    (gen_random_uuid(), 'Hospital Vida Saudável', 'Vida Saudável', '32345678000103', TRUE),
+    (gen_random_uuid(), 'Hospital Esperança', 'Esperança', '42345678000104', TRUE);
+
+
+INSERT INTO PROFISSIONAL (IDPROFISSIONAL, ID_HOSPITAL, NOME, CPF, EMAIL, SENHA, ESTADO, ADMIN, STATUS) VALUES
+    (gen_random_uuid(), (SELECT ID_HOSPITAL FROM HOSPITAL ORDER BY random() LIMIT 1), 'Dr. João Silva', '09157087520', 'joao.silva@hospital.com', 'senha123', 'SP', TRUE, TRUE),
+    (gen_random_uuid(), (SELECT ID_HOSPITAL FROM HOSPITAL ORDER BY random() LIMIT 1), 'Dra. Maria Souza', '05902877539', 'maria.souza@hospital.com', 'senha123', 'RJ', FALSE, TRUE),
+    (gen_random_uuid(), (SELECT ID_HOSPITAL FROM HOSPITAL ORDER BY random() LIMIT 1), 'Enf. Pedro Lima', '33333333333', 'pedro.lima@hospital.com', 'senha123', 'MG', FALSE, TRUE),
+    (gen_random_uuid(), (SELECT ID_HOSPITAL FROM HOSPITAL ORDER BY random() LIMIT 1), 'Enf. Carla Mendes', '44444444444', 'carla.mendes@hospital.com', 'senha123', 'RS', FALSE, TRUE);
+
+INSERT INTO MEDICO (IDPROFISSIONAL, CRM) VALUES
+    ((SELECT IDPROFISSIONAL FROM PROFISSIONAL WHERE NOME = 'Dr. João Silva'), '123456'),
+    ((SELECT IDPROFISSIONAL FROM PROFISSIONAL WHERE NOME = 'Dra. Maria Souza'), '654321');
+
+
+INSERT INTO ENFERMEIRO (IDPROFISSIONAL, COREN) VALUES
+    ((SELECT IDPROFISSIONAL FROM PROFISSIONAL WHERE NOME = 'Enf. Pedro Lima'), '9876543210'),
+    ((SELECT IDPROFISSIONAL FROM PROFISSIONAL WHERE NOME = 'Enf. Carla Mendes'), '0123456789');
+
+
+INSERT INTO LOG (ID_LOG, IDPROFISSIONAL, DESCRICAO, DATA) VALUES
+    (gen_random_uuid(), (SELECT IDPROFISSIONAL FROM PROFISSIONAL ORDER BY random() LIMIT 1), 'Alteração no prontuário do paciente.', CURRENT_DATE),
+    (gen_random_uuid(), (SELECT IDPROFISSIONAL FROM PROFISSIONAL ORDER BY random() LIMIT 1), 'Atualização do status clínico.', CURRENT_DATE);
+

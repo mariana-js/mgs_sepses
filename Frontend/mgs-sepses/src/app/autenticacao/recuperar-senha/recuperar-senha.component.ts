@@ -21,16 +21,20 @@ export class RecuperarSenhaComponent {
   senha_anterior: string = '';
   nova_senha: string = '';
   confirmacao_nova_senha: string = '';
+  usuario: Profissional | undefined;
+
+  logs: Log[] = [];
+  profissionais: Profissional[] = [];
 
   newLog: Log = {
     id_log: '',
-    id_profissional: '',
+    idProfissional: '',
     data: new Date(),
     descricao: ''
   }
   newProfissional: Profissional = {
     id_hospital: '',
-    id_profissional: '',
+    idProfissional: '',
     nome: '',
     cpf: '',
     email: '',
@@ -42,41 +46,45 @@ export class RecuperarSenhaComponent {
 
   constructor(
     private readonly validation: ValidationService,
-    private readonly log: LogService,
+    private readonly logService: LogService,
     private readonly profisional: ProfissionalService,
     private readonly router: Router
-  ) {}
+  ) { }
 
-  recuperarSenha(cpf: string, antigaSenha: string, novaSenha: string, confirmacaoNovaSenha: string) {
-    const validation = this.validation.validationRecuperarSenha(cpf, antigaSenha, novaSenha, confirmacaoNovaSenha);
-    const prof = this.profisional.buscarProfissional(cpf);
-
-    console.log(validation)
+  async recuperarSenha(cpf: string, antigaSenha: string, novaSenha: string, confirmacaoNovaSenha: string) {
+    cpf = this.cpf;
+    antigaSenha = this.senha_anterior;
+    novaSenha = this.nova_senha;
+    confirmacaoNovaSenha = this.confirmacao_nova_senha;
+    const validation = await this.validation.validationRecuperarSenha(cpf, antigaSenha, novaSenha, confirmacaoNovaSenha);
+    this.usuario = this.validation.usuario;
     if (validation.length === 0) {
-      if (prof) {
-        this.newProfissional = { ...prof }; // Atribui uma cópia do objeto Profissional
+      if (this.usuario) {
+        this.newProfissional = this.usuario;
         this.newProfissional.senha = novaSenha;
-
-        this.profisional.updateProfisssional(this.newProfissional);
-
-        // Adicionando o log ao sistema
-        this.log.addlog(this.newLog, prof, 'recuperar-senha', this.newLog.data);
-
-        alert('Senha alterada com sucesso!');
-
-        // Navegar para a rota de acordo com a atuação do usuário
-        this.router.navigate([prof.admin ? '/usuarios' : '/pacientes']);
-      } else {
-        alert('Usuário não encontrado!');
-      }
-
-    }
-
-    else {
-      this.mensage = this.validation.resposta;
-      console.log(this.mensage)
-    }
-
+        try {
+          if (this.newProfissional !== undefined) {
+           this.addlog();
+            await this.profisional.updateProfissional(this.newProfissional).toPromise();
+          }
+          alert('Senha alterada com sucesso!');
+          this.router.navigate([this.usuario.admin ? '/usuarios' : '/pacientes']);
+        } catch (error) {
+          console.error("Erro ao atualizar senha: ", error);
+          alert('Erro ao atualizar senha, tente novamente.');
+        }
+      } else alert('Usuário não encontrado!');
+    } else this.mensage = this.validation.resposta;
   }
-
+  addlog() {
+    if (this.usuario) {
+      this.newLog.idProfissional = this.usuario.idProfissional;
+      this.logService.addlog(this.newLog, this.usuario, 'recuperar-senha', new Date()).subscribe({
+        next: ((res) => res),
+        error: (err) => {
+          console.error('Erro ao registrar log:', err);
+        }
+      });
+    }
+  }
 }

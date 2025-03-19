@@ -38,7 +38,25 @@ public class LogController {
     public ResponseEntity<List<LogModel>> getAllLogs() {
         return ResponseEntity.status(HttpStatus.OK).body(logService.findAll());
     }
-
+	// @PostMapping
+	// public ResponseEntity<Object> saveLog(@RequestBody @Valid LogDto logDto) {
+	// 	System.out.println("📌 Recebendo log no backend: " + logDto);
+	
+	// 	try {
+	// 		var logg = new LogModel();
+	// 		BeanUtils.copyProperties(logDto, logg);
+			
+	// 		LogModel savedLog = logService.save(logg);
+			
+	// 		System.out.println("✅ Log salvo com sucesso: " + savedLog);
+			
+	// 		return ResponseEntity.status(HttpStatus.CREATED).body(savedLog);
+	// 	} catch (Exception e) {
+	// 		System.err.println("❌ Erro ao salvar log: " + e.getMessage());
+	// 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao salvar log.");
+	// 	}
+	// }
+	
     @PostMapping
 	public ResponseEntity<Object> saveLog(@RequestBody @Valid LogDto logDto) {
 		var logg = new LogModel();

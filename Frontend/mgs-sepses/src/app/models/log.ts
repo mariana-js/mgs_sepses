@@ -1,6 +1,6 @@
 export interface Log {
   id_log: string;
-  id_profissional: string;
+  idProfissional: string;
   data: Date;
   descricao: string;
 }

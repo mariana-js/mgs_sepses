@@ -1,23 +1,28 @@
-<div>
-  <h2>Recuperação de senha</h2>
- <a routerLink="/login" >Voltar a tela de login</a>
-  <div>
-    <div class="campos-autenticacao">
-      <form action="Post">
-        <input type="text" placeholder="CPF" [(ngModel)]="cpf" name="cpf">
-        <input type="password" placeholder="Senha anterior" [(ngModel)]="senha_anterior" name="senha_anterior">
-        <input type="password" placeholder="Nova senha" [(ngModel)]="nova_senha" name="nova_senha">
-        <input type="password" placeholder="Confirme a nova senha" [(ngModel)]="confirmacao_nova_senha" name="confirmacao_nova_senha">
-      </form>
+<div class="global-autenticacao">
+
+  <div class="container-autenticacao">
+
+
+    <div class="voltar-autenticacao">
+      <a routerLink="/login">< Voltar à tela de login</a>
     </div>
-    <div>
+
+    <div class="mensagem-autenticacao">
       <span>{{mensage}}</span>
     </div>
-    <div>
-      <button (click)="recuperarSenha(cpf,senha_anterior, nova_senha,confirmacao_nova_senha)">Confirmar</button>
+      <div class="form-autenticacao">
+        <form action="Post">
+          <input type="text" placeholder="CPF" [(ngModel)]="cpf" name="cpf">
+          <input type="password" placeholder="Senha anterior" [(ngModel)]="senha_anterior" name="senha_anterior">
+          <input type="password" placeholder="Nova senha" [(ngModel)]="nova_senha" name="nova_senha">
+          <input type="password" placeholder="Confirme a nova senha" [(ngModel)]="confirmacao_nova_senha"
+            name="confirmacao_nova_senha">
+        </form>
+      </div>
+
+      <div class="button-autenticacao">
+        <button (click)="recuperarSenha(cpf,senha_anterior, nova_senha,confirmacao_nova_senha)">Confirmar</button>
+      </div>
     </div>
-
   </div>
-
-</div>
 <router-outlet></router-outlet>

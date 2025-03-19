@@ -14,6 +14,7 @@ public class LogDto {
     private UUID idLog;
 
     @NotNull
+    @JsonProperty("idProfissional")
 	private UUID idProfissional;
 
     @NotNull

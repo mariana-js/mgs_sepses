@@ -10,8 +10,8 @@ import jakarta.validation.constraints.Size;
 
 public class ProfissionalDto {
 
-    @JsonProperty("id_profissional")
-    private UUID idProfissional;
+    @JsonProperty("idprofissional")
+    private UUID idprofissional;
 
     @NotNull
 	private UUID idHospital;
@@ -32,18 +32,16 @@ public class ProfissionalDto {
     @Size(max = 2)
 	private String estado;
 
-    @NotNull
 	private Boolean status;
 
-    @NotNull
 	private Boolean admin;
 
     public UUID getIdProfissional() {
-        return idProfissional;
+        return idprofissional;
     }
 
-    public void setIdProfissional(UUID idProfissional) {
-        this.idProfissional = idProfissional;
+    public void setIdProfissional(UUID idprofissional) {
+        this.idprofissional = idprofissional;
     }
 
     public UUID getIdHospital() {

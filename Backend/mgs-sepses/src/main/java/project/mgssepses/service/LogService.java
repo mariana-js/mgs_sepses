@@ -19,8 +19,8 @@ public class LogService {
     }
 
     @Transactional
-    public LogModel save(LogModel log) {
-        return logRepository.save(log);
+    public LogModel save(LogModel logModel) {
+        return logRepository.save(logModel);
     }
 
     public Optional<LogModel> findById(UUID idLog) {
@@ -31,7 +31,7 @@ public class LogService {
         return logRepository.findAll();
     }
 
-    public void delete(LogModel log) {
-        logRepository.delete(log);
+    public void delete(LogModel logModel) {
+        logRepository.delete(logModel);
     }
 }

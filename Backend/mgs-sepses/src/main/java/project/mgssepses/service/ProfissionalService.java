@@ -24,8 +24,8 @@ public class ProfissionalService {
         return profissionalRepository.save(profissional);
     }
 
-    public Optional<Profissional> findById(UUID idProfissional) {
-        return profissionalRepository.findById(idProfissional);
+    public Optional<Profissional> findById(UUID idprofissional) {
+        return profissionalRepository.findById(idprofissional);
     }
 
     public List<Profissional> findAll() {

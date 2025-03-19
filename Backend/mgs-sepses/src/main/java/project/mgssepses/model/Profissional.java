@@ -1,7 +1,6 @@
 package project.mgssepses.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -9,8 +8,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 
@@ -22,7 +19,8 @@ public class Profissional implements Serializable  {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private UUID idProfissional;
+    @Column(name = "idprofissional")
+	private UUID idprofissional;
 
     @Column(name = "id_hospital", nullable = false) 
 	private UUID idHospital;
@@ -48,19 +46,16 @@ public class Profissional implements Serializable  {
 	@Column(name = "admin", nullable = false)
 	private Boolean admin;
 
-    // @Column(name = "registration_date", nullable = false)
-    // private LocalDateTime registrationDate;
-
     public static long getSerialversionuid() {
         return serialVersionUID;
     }
 
     public UUID getIdProfissional() {
-        return idProfissional;
+        return idprofissional;
     }
 
-    public void setIdProfissional(UUID idProfissional) {
-        this.idProfissional = idProfissional;
+    public void setIdProfissional(UUID idprofissional) {
+        this.idprofissional = idprofissional;
     }
 
     public UUID getIdHospital() {
@@ -126,14 +121,5 @@ public class Profissional implements Serializable  {
     public void setAdmin(Boolean admin) {
         this.admin = admin;
     }
-
-    // public void setRegistrationDate(LocalDateTime registrationDate) {
-    //     this.registrationDate = registrationDate;
-    // }
-
-    // public LocalDateTime getRegistrationDate() {
-    //     return registrationDate;
-    // }
-
 
 }

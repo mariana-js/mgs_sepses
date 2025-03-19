@@ -1,9 +1,9 @@
-drop table enfermeiro;
-drop table medico;
-drop table log;
-drop table profissional;
-drop table hospital;
 drop table risco_sepse;
 drop table situacao_adversa;
+drop table dados_clinicos;
 drop table paciente;
-
+drop table log;
+drop table enfermeiro;
+drop table medico;
+drop table profissional;
+drop table hospital;

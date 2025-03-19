@@ -3,10 +3,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { LogService } from '../../services/log.service';
-import { ProfissionalService } from '../../services/profissional.service';
-import { ValidationService } from '../../services/validation.service';
 import { Log } from '../../models/log';
+import { Profissional } from '../../models/profissional';
+import { LogService } from '../../services/log.service';
+import { ValidationService } from '../../services/validation.service';
 
 @Component({
   selector: 'app-login',
@@ -19,48 +19,52 @@ export class LoginComponent {
   mensage: string[] = [];
   cpf: string = '';
   senha: string = '';
+  usuario: Profissional | undefined;
 
   newLog: Log = {
     id_log: '',
-    id_profissional: '',
+    idProfissional: '',
     data: new Date(),
     descricao: ''
   }
 
   constructor(
     private readonly validation: ValidationService,
-    private readonly log: LogService,
-    private readonly profisional: ProfissionalService,
+    private readonly logService: LogService,
     private readonly router: Router
   ) {
 
   }
-  login(cpf: string, senha: string) {
-
+  async login(cpf: string, senha: string) {
     cpf = this.cpf;
     senha = this.senha;
-    const validation = this.validation.validationLogin(cpf, senha);
-    const prof = this.profisional.buscarProfissional(cpf);
+
+    const validation = await this.validation.validationLogin(cpf, senha);
+    this.usuario = this.validation.usuario;
 
     if (validation.length === 0) {
-
-        // Adicionando o log ao sistema
-        if (prof !== undefined) {
-          this.log.addlog(this.newLog, prof, 'login', this.newLog.data);
-
-          // navegar para a rota de acordo com a atuacao do usuario
-          this.router.navigate([prof.admin ? '/usuarios' : '/pacientes']);
-        }
-
+      if (this.usuario) {
+        this.addlog()
+        this.router.navigate([this.usuario.admin ? '/usuarios' : '/pacientes']);
+      }
+    } else {
+      this.mensage = validation;
     }
-
-    else {
-      this.mensage = this.validation.resposta;
-      console.log(this.mensage)
-    }
-
   }
 
+
+  addlog() {
+    if (this.usuario) {
+      this.newLog.idProfissional = this.usuario.idProfissional;
+
+      this.logService.addlog(this.newLog, this.usuario, 'login', new Date()).subscribe({
+        next: ((res) => res),
+        error: (err) => {
+          console.error('Erro ao registrar log:', err);
+        }
+      });
+    }
+  }
   esqueceuSenha() {
     alert('Entre em contato com o administrador do sistema para a alteração da senha.')
   }

@@ -24,7 +24,13 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST, "/profissional/**").permitAll() 
             .requestMatchers(HttpMethod.GET, "/profissional/**").permitAll() // ✅ Permite GET sem autenticação
             .requestMatchers(HttpMethod.PUT, "/profissional/**").permitAll() // ✅ Permite PUT sem autenticação
-            .requestMatchers(HttpMethod.DELETE, "/profissional/**").permitAll() // ✅ Permite DELETE sem autenticação
+            .requestMatchers(HttpMethod.DELETE, "/profissional/**").permitAll() 
+
+            .requestMatchers(HttpMethod.POST, "/hospital/**").permitAll() 
+            .requestMatchers(HttpMethod.GET, "/hospital/**").permitAll() // ✅ Permite GET sem autenticação
+            .requestMatchers(HttpMethod.PUT, "/hospital/**").permitAll() // ✅ Permite PUT sem autenticação
+            .requestMatchers(HttpMethod.DELETE, "/hospital/**").permitAll() 
+            // ✅ Permite DELETE sem autenticação
             .anyRequest().authenticated() // 🔹 Outras rotas precisarão de autenticação
             );
 

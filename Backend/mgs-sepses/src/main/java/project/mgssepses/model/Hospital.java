@@ -26,7 +26,7 @@ public class Hospital implements Serializable{
 	private String nomefantasia;
 
 	@Column(name = "cnpj", nullable = false)
-	private String descricao;
+	private String cnpj;
 
     @Column(name = "ativo", nullable = false)
 	private Boolean ativo;
@@ -39,11 +39,11 @@ public class Hospital implements Serializable{
         this.idHospital = idHospital;
     }
 
-    public String getIdProfissional() {
+    public String getRazaosocial() {
         return razaosocial;
     }
 
-    public void setIdProfissional(String razaosocial) {
+    public void setRazaosocial(String razaosocial) {
         this.razaosocial = razaosocial;
     }
 
@@ -55,12 +55,12 @@ public class Hospital implements Serializable{
         this.nomefantasia = nomefantasia;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getCnpj() {
+        return cnpj;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
     }
 
     public Boolean getAtivo() {
@@ -71,6 +71,5 @@ public class Hospital implements Serializable{
         this.ativo = ativo;
     }
 
-
-
+    
 }

@@ -50,8 +50,8 @@ public class ProfissionalController {
 
 
 	@SuppressWarnings("rawtypes")
-	@GetMapping("/{idprofissional}")
-	public ResponseEntity getOneProfissional(@PathVariable(value = "idprofissional") UUID idprofissional) {
+	@GetMapping("/{idProfissional}")
+	public ResponseEntity getOneProfissional(@PathVariable(value = "idProfissional") UUID idprofissional) {
 		Optional<Profissional> profissionalOptional = profissionalService.findById(idprofissional);
 		if (!profissionalOptional.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Profissional not found.");

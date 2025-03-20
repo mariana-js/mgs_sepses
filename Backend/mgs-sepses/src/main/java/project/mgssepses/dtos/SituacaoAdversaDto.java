@@ -1,35 +1,27 @@
-package project.mgssepses.model;
+package project.mgssepses.dtos;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Entity
-@Table(name = "situacao_adversa")
-public class SituacaoAdversa implements Serializable{
-    private static final long serialVersionUID = 1L;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class SituacaoAdversaDto {
+    @JsonProperty("id")
     private UUID id;
 
-    @Column(name = "id_paciente", nullable = false)
+    @NotNull
     private UUID idpaciente;
 
-    @Column(name = "idprofissional", nullable = false)
+    @NotNull
     private UUID idprofissional;
 
-    @Column(name = "data", nullable = false)
+    @NotNull
     private LocalDate data;
 
-    @Column(name = "situacao_adversa", nullable = false)
+    @NotBlank
     private String descricaoSituacaoAdversa;
 
     public UUID getId() {
@@ -71,8 +63,6 @@ public class SituacaoAdversa implements Serializable{
     public void setDescricaoSituacaoAdversa(String descricaoSituacaoAdversa) {
         this.descricaoSituacaoAdversa = descricaoSituacaoAdversa;
     }
-    
 
-    
     
 }

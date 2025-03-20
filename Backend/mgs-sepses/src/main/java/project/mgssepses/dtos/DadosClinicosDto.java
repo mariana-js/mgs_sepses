@@ -1,99 +1,47 @@
-package project.mgssepses.model;
+package project.mgssepses.dtos;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Entity
-@Table(name = "dados_clinicos")
-public class DadosClinicos implements Serializable{
+import jakarta.validation.constraints.NotNull;
 
-    private static final long serialVersionUID = 1L;
+public class DadosClinicosDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonProperty("id")
     private UUID id;
 
-    @Column(name = "id_paciente", nullable = false)
+    @NotNull
     private UUID idPaciente;
 
-    @Column(name = "idprofissional", nullable = false)
+    @NotNull
     private UUID idProfissional;
 
-    @Column(name = "data", nullable = false)
+    @NotNull
     private LocalDate data;
-
-    @Column(name = "RELACAOP02FI02", nullable = true)
+    
     private String relacaoP02Fi02;
-
-    @Column(name = "plaquetas", nullable = true)
+    
     private String plaquetas;
 
-    @Column(name = "diurese", nullable = true)
     private String diurese;
-
-    @Column(name = "creatinina", nullable = true)
+    
     private String creatinina;
-
-    @Column(name = "glasgow", nullable = true)
+    
     private String glasgow;
 
-    @Column(name = "ep", nullable = true)
     private String ep;
 
-    @Column(name = "norepinefrina", nullable = true)
     private String norepinefrina;
 
-    @Column(name = "dobutamina", nullable = true)
     private String dobutamina;
 
-    @Column(name = "dopamina", nullable = true)
     private String dopamina;
 
-    @Column(name = "pam", nullable = true)
     private String pam;
 
-    @Column(name = "bilirrubina", nullable = true)
     private String bilirrubina;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public UUID getIdPaciente() {
-        return idPaciente;
-    }
-
-    public void setIdPaciente(UUID idPaciente) {
-        this.idPaciente = idPaciente;
-    }
-
-    public UUID getIdProfissional() {
-        return idProfissional;
-    }
-
-    public void setIdProfissional(UUID idProfissional) {
-        this.idProfissional = idProfissional;
-    }
-
-    public LocalDate getData() {
-        return data;
-    }
-
-    public void setData(LocalDate data) {
-        this.data = data;
-    }
 
     public String getRelacaoP02Fi02() {
         return relacaoP02Fi02;
@@ -183,6 +131,37 @@ public class DadosClinicos implements Serializable{
         this.bilirrubina = bilirrubina;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public UUID getIdPaciente() {
+        return idPaciente;
+    }
+
+    public void setIdPaciente(UUID idPaciente) {
+        this.idPaciente = idPaciente;
+    }
+
+    public UUID getIdProfissional() {
+        return idProfissional;
+    }
+
+    public void setIdProfissional(UUID idProfissional) {
+        this.idProfissional = idProfissional;
+    }
+
+    public LocalDate getData() {
+        return data;
+    }
+
+    public void setData(LocalDate data) {
+        this.data = data;
+    }
 
     
 }

@@ -14,7 +14,7 @@ public class Enfermeiro implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@Column(name = "idProfissional", nullable = false)
+	@Column(name = "idprofissional", nullable = false)
     private UUID idprofissional;
 
 	@Column(name = "coren", nullable = false)

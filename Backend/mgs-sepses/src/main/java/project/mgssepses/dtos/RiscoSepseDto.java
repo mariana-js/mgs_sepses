@@ -1,32 +1,25 @@
-package project.mgssepses.model;
+package project.mgssepses.dtos;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Entity
-@Table(name = "risco_sepse")
-public class RiscoSepse implements Serializable {
-        private static final long serialVersionUID = 1L;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class RiscoSepseDto {
+
+    @JsonProperty("id")
     private UUID id;
 
-    @Column(name = "id_paciente", nullable = false)
+    @NotNull
     private UUID idpaciente;
 
-    @Column(name = "data", nullable = false)
+    @NotNull
     private LocalDate data;
 
-    @Column(name = "risco", nullable = false)
+    @NotBlank
     private String risco;
 
     public UUID getId() {

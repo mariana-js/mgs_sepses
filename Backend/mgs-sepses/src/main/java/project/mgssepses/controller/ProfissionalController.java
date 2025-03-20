@@ -63,7 +63,7 @@ public class ProfissionalController {
 	public ResponseEntity<Object> deleteProfissional(@PathVariable(value = "idprofissional") UUID idprofissional) {
 		Optional<Profissional> profissionalOptional = profissionalService.findById(idprofissional);
 		if (!profissionalOptional.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Profissional not found.");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Profissional not found..");
 		}
 		try {
 			profissionalService.delete(profissionalOptional.get());

@@ -19,7 +19,7 @@ public class LogModel implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID idLog;
 
-	@Column(name = "idProfissional", nullable = false)
+	@Column(name = "idprofissional", nullable = false)
 	private UUID idProfissional;
 
 	@Column(name = "data", nullable = false)

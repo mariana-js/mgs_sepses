@@ -1,0 +1,41 @@
+<div> <!-- Global  -->
+
+  <div><!-- Container  -->
+
+    <div><!-- Pesquisa de log por data  -->
+
+      <form action="Post">
+        <label for="data">Selecione uma data:</label>
+        <input type="date" [(ngModel)]="data" name="data" (input)="pesquisar(data)" placeholder="data" />
+      </form>
+
+      <span *ngIf="buscou === true && logsFiltrados.length === 0 ">Sem logs na data selecionada.</span>
+    </div>
+
+    <div> <!-- Lista dos usuarios - Tabela  -->
+
+      <table>
+        <thead>
+          <tr>
+            <th>Descricao</th>
+            <th>Data</th>
+            <!-- <th>Horário</th> -->
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let logs of (logsFiltrados.length > 0 ? logsFiltrados : log)">
+            <td>{{logs.descricao}}</td>
+            <td>{{logs.data}}</td>
+            <!-- <td>{{logs.hora}}</td> -->
+          </tr>
+
+
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

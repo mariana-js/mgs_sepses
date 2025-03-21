@@ -13,8 +13,9 @@ import { ValidationService } from '../../services/validation.service';
   imports: [RouterOutlet, RouterLink, CommonModule, FormsModule,
     HttpClientModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css', '/src/app/autenticacao/autenticacao.css']
 })
+
 export class LoginComponent {
   mensage: string[] = [];
   cpf: string = '';

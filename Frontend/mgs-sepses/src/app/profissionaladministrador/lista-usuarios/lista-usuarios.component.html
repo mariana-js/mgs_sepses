@@ -1,1 +1,41 @@
-<p>lista-usuarios works!</p>
+<div> <!-- Global  -->
+
+  <div><!-- Container  -->
+
+    <div><!-- Pesquisa de usuario  -->
+
+      <form action="Post">
+        <input type="text" placeholder="Insira o nome do profissional." [(ngModel)]="nome" name="nome"
+          (input)="pesquisar(nome)">
+      </form>
+      <span *ngIf="buscou === true && newProfissionalPesquisa.length === 0 && this.nome !== '' ">Nenhum profissional foi
+        encontrado.</span>
+    </div>
+    <div> <!-- Lista dos usuarios - Tabela  -->
+
+      <table>
+        <thead>
+          <tr>
+            <th>CPF</th>
+            <th>Profissional</th>
+            <th>Atuação</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr
+            *ngFor="let profissionais of (newProfissionalPesquisa.length > 0 ? newProfissionalPesquisa : newProfissional)">
+            <td>{{profissionais.cpf}}</td>
+            <td>{{profissionais.nome}}</td>
+            <td>{{profissionais.atuacao}}</td>
+          </tr>
+
+
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

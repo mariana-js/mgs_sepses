@@ -2,11 +2,45 @@
 
   <div class="containers-head">
 
+    <!-- Direito -->
+    <div routerLink="/usuarios" *ngIf="rotaAtual.includes('usuarios') || rotaAtual.includes('outras-opcoes')" [ngClass]="{
+      'ativo-head': rotaAtual.includes('/usuarios'),
+      'desativo-head': rotaAtual.includes('/outras-opcoes')
+    }">
+      <span>Lista de usuários</span>
+    </div>
+
+    <div routerLink="/lista-logs" *ngIf="rotaAtual.includes('lista-logs') || rotaAtual.includes('log')" [ngClass]="{
+      'ativo-head': rotaAtual.includes('/lista-logs'),
+      'desativo-head': rotaAtual.includes('/log')
+    }">
+      <span>Lista de Logs</span>
+    </div>
+
+    <div routerLink="/hospitais" *ngIf="rotaAtual.includes('hospitais') || rotaAtual.includes('gerenciar-hospital')" [ngClass]="{
+      'ativo-head': rotaAtual.includes('/hospitais'),
+      'desativo-head': rotaAtual.includes('/gerenciar-hospital')
+    }">
+      <span>Lista de Hospitais</span>
+    </div>
+
+    <!-- Central -->
+
     <div class="titulo-head">
       <h1>MGS SEPSE</h1>
     </div>
-    
+
+    <!-- Esquerdo  -->
+    <div routerLink="/outras-opcoes"
+      *ngIf="rotaAtual.includes('usuarios') || rotaAtual.includes('outras-opcoes') || rotaAtual.includes('lista-logs')|| rotaAtual.includes('hospitais')"
+      [ngClass]="{
+      'ativo-head': rotaAtual.includes('/outras-opcoes') ,
+      'desativo-head': rotaAtual.includes('/usuarios') || rotaAtual.includes('/lista-logs') || rotaAtual.includes('/hospitais')
+    }">
+      <span>Outras Opções</span>
+    </div>
   </div>
 
 
 </div>
+<router-outlet></router-outlet>

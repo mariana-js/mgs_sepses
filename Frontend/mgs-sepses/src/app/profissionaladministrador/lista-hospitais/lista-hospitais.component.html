@@ -1,0 +1,45 @@
+<div> <!-- Global  -->
+
+  <div> <!-- Container  -->
+
+    <div> <!-- Container Head  -->
+
+      <div routerLink="/gerenciar-hospital">
+        <img src="icones/adicionar.png" alt="">
+      </div>
+
+      <div><!-- Pesquisa de hospital por razao social  -->
+
+        <form action="Post">
+          <input type="text" placeholder="Insira a razao social do hospital" [(ngModel)]="razao" name="razao"
+            (input)="pesquisar(razao)">
+        </form>
+      </div>
+    </div>
+  </div>
+  <div> <!-- Lista dos usuarios - Tabela  -->
+
+    <table>
+      <thead>
+        <tr>
+          <th>CNPJ</th>
+          <th>Razão Social</th>
+          <th>Nome fantasia</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let hospitais of (newHospitalPesquisa.length > 0 ? newHospitalPesquisa : hospital)">
+          <td>{{hospitais.cnpj}}</td>
+          <td>{{hospitais.razaosocial}}</td>
+          <td>{{hospitais.nomefantasia}}</td>
+        </tr>
+
+
+      </tbody>
+    </table>
+
+  </div>
+
+</div>
+<router-outlet></router-outlet>

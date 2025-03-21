@@ -13,7 +13,7 @@ import { Profissional } from '../../models/profissional';
   selector: 'app-recuperar-senha',
   imports: [RouterOutlet, RouterLink, CommonModule, FormsModule, HttpClientModule],
   templateUrl: './recuperar-senha.component.html',
-  styleUrl: './recuperar-senha.component.css'
+  styleUrls: ['./recuperar-senha.component.css', '/src/app/autenticacao/autenticacao.css']
 })
 export class RecuperarSenhaComponent {
   mensage: string[] = [];

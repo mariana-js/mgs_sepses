@@ -34,8 +34,6 @@ export class ProfissionalService {
     return this.http.put<Profissional>(`${this.api}/${profissional.idProfissional}`, profissional);
 }
 
-
-
   deleteProfissional(id: string): Observable<void> {
     this.profissional = this.profissional.filter(prof => prof.idProfissional !== id);
     return this.http.delete<void>(`${this.api}/${id}`)

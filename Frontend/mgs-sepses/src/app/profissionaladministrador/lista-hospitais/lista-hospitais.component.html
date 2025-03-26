@@ -1,45 +1,52 @@
-<div> <!-- Global  -->
+<div class="global"> <!-- Global  -->
 
-  <div> <!-- Container  -->
+  <div class="cont"> <!-- Container  -->
 
-    <div> <!-- Container Head  -->
+    <div class="cont-painel">
 
-      <div routerLink="/gerenciar-hospital">
-        <img src="icones/adicionar.png" alt="">
+      <div class="container-pesquisa">
+        <div class="container-pesquisa-adicionar"> <!-- Container Head  -->
+          <div class="campo-pesquisa"><!-- Pesquisa de hospital por razao social  -->
+
+            <form action="Post">
+              <input type="text" placeholder="Insira a razao social do hospital" [(ngModel)]="razao" name="razao"
+                (input)="pesquisar(razao)">
+            </form>
+          </div>
+          <div routerLink="/gerenciar-hospital">
+            <img src="icones/adicionar.png" alt="">
+          </div>
+        </div>
+        <span class="campo-pesquisa"
+          *ngIf="buscou === true && newHospitalPesquisa.length === 0 && this.razao !== '' ">Nenhum hospital foi
+          encontrado.</span>
       </div>
 
-      <div><!-- Pesquisa de hospital por razao social  -->
+      <div class="cont-tabela" >
+        <table>
+          <thead>
+            <tr>
+              <th>CNPJ</th>
+              <th>Razão Social</th>
+              <th>Nome fantasia</th>
+            </tr>
+          </thead>
 
-        <form action="Post">
-          <input type="text" placeholder="Insira a razao social do hospital" [(ngModel)]="razao" name="razao"
-            (input)="pesquisar(razao)">
-        </form>
+          <tbody>
+            <tr (click)="irParaHospital(hospitais.idHospital)"
+              *ngFor="let hospitais of (newHospitalPesquisa.length > 0 ? newHospitalPesquisa : hospital)">
+              <td>{{hospitais.cnpj}}</td>
+              <td>{{hospitais.razaosocial}}</td>
+              <td>{{hospitais.nomefantasia}}</td>
+            </tr>
+
+
+          </tbody>
+        </table>
       </div>
+
     </div>
+    
   </div>
-  <div> <!-- Lista dos usuarios - Tabela  -->
-
-    <table>
-      <thead>
-        <tr>
-          <th>CNPJ</th>
-          <th>Razão Social</th>
-          <th>Nome fantasia</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr *ngFor="let hospitais of (newHospitalPesquisa.length > 0 ? newHospitalPesquisa : hospital)">
-          <td>{{hospitais.cnpj}}</td>
-          <td>{{hospitais.razaosocial}}</td>
-          <td>{{hospitais.nomefantasia}}</td>
-        </tr>
-
-
-      </tbody>
-    </table>
-
-  </div>
-
 </div>
 <router-outlet></router-outlet>

@@ -7,6 +7,7 @@ import { Log } from '../../models/log';
 import { Profissional } from '../../models/profissional';
 import { LogService } from '../../services/log.service';
 import { ValidationService } from '../../services/validation.service';
+import { ConexaoService } from '../../services/conexao.service';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,7 @@ export class LoginComponent {
   usuario: Profissional | undefined;
 
   newLog: Log = {
-    id_log: '',
+    idLog: '',
     idProfissional: '',
     data: new Date(),
     descricao: ''
@@ -32,6 +33,7 @@ export class LoginComponent {
   constructor(
     private readonly validation: ValidationService,
     private readonly logService: LogService,
+    private readonly conexaoService: ConexaoService,
     private readonly router: Router
   ) {
 
@@ -46,6 +48,7 @@ export class LoginComponent {
     if (validation.length === 0) {
       if (this.usuario) {
         this.addlog()
+        this.conexaoService.setProfissional(this.usuario);
         this.router.navigate([this.usuario.admin ? '/usuarios' : '/pacientes']);
       }
     } else {

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import jakarta.validation.Valid;
 import project.mgssepses.dtos.MedicoDto;
 import project.mgssepses.model.Medico;
@@ -25,6 +26,7 @@ import project.mgssepses.service.MedicoService;
 
 @RestController
 @RequestMapping("/profissional/medico")
+@CrossOrigin(origins = "http://localhost:4200")
 public class MedicoController {
     final MedicoService medicoService;
 

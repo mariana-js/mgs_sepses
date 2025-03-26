@@ -18,7 +18,7 @@ export class RiscoSepseService {
   }
 
   addRiscoSepse(risco: RiscoSepse): Observable<RiscoSepse> {
-    risco.id = uuidv4();
+    // risco.id = uuidv4();
     this.risco.push(risco);
     return this.http.post<RiscoSepse>(this.api, risco);
   }

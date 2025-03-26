@@ -15,7 +15,11 @@ export class ProfissionalService {
   getProfissional(): Observable<Profissional[]> {
     return this.http.get<Profissional[]>(`${this.api}`);
   }
-
+  buscarProfissionalId(id: string): Observable<Profissional | undefined> {
+    return this.getProfissional().pipe(
+      map((profs: Profissional[]) => profs.find(prof => prof.idProfissional === id))
+    );
+  }
   buscarProfissional(cpf: string): Observable<Profissional | undefined> {
     return this.getProfissional().pipe(
       map(profissionais => profissionais.find(profissional => profissional.cpf === cpf))
@@ -24,13 +28,11 @@ export class ProfissionalService {
 
 
   addProfissional(profissional: Profissional): Observable<Profissional> {
-    profissional.idProfissional = uuidv4();
     this.profissional.push(profissional);
     return this.http.post<Profissional>(this.api, profissional);
   }
 
   updateProfissional(profissional: Profissional): Observable<Profissional> {
-    console.log(profissional.idProfissional)
     return this.http.put<Profissional>(`${this.api}/${profissional.idProfissional}`, profissional);
 }
 

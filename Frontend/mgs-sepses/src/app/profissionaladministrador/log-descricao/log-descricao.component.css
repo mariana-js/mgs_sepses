@@ -1,0 +1,58 @@
+.voltar a {
+  text-decoration: none;
+  color: #98AECE;
+}
+
+.voltar {
+  justify-content: left;
+  align-items: left;
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+}
+
+.pagina-log {
+  width: 100%;
+  margin: 1rem 0;
+  font-size: 13px;
+}
+
+.data-log {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0.6rem 0;
+}
+
+.descricao-log,
+.nome,
+.cpf {
+  background-color: #D9D9D9;
+
+  border-radius: 10px;
+}
+
+.descricao-log {
+  display: flex;
+  height: 10rem;
+  padding: 0.8rem;
+}
+
+.nome,
+.cpf {
+  height: 1rem;
+  padding: 0.6rem;
+}
+.nome{
+  width: 75%;
+}
+.cpf{
+  width: 17%;
+  text-align: center;
+}
+
+.responsavel-dados-log {
+  width: 100%;
+  display: inline-flex;
+  margin: 1rem 0;
+  justify-content: space-between;
+}

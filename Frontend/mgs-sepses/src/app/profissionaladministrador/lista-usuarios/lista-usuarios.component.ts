@@ -2,7 +2,7 @@ import { CommonModule, NgFor } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { Profissional } from '../../models/profissional';
 import { EnfermeiroService } from '../../services/enfermeiro.service';
 import { MedicoService } from '../../services/medico.service';
@@ -29,6 +29,7 @@ export class ListaUsuariosComponent {
 
   ngOnInit() {
     this.listarUsuarios();
+    this.newProfissional = this.newProfissional.sort((a, b) => a.nome.localeCompare(b.nome));
   }
 
   constructor(
@@ -37,15 +38,20 @@ export class ListaUsuariosComponent {
     private readonly medicoService: MedicoService,
     private readonly router: Router) { }
 
-  listarUsuarios() {
-    this.profisionalService.getProfissional().subscribe(resp => {
-      this.profissional = resp;
-    });
-    this.listarProfissionalTI();
-    this.listarProfissionalMedico();
-    this.listarProfissionalEnfermeiro();
-    this.newProfissional = this.newProfissional.sort((a, b) => a.nome.localeCompare(b.nome));
-  }
+    listarUsuarios() {
+      this.newProfissional = [];
+      this.newProfissionalOriginal = [];
+      this.profissional = [];
+
+      this.profisionalService.getProfissional().subscribe(resp => {
+        this.profissional = resp;
+
+        this.listarProfissionalTI();
+        this.listarProfissionalMedico();
+        this.listarProfissionalEnfermeiro();
+      });
+    }
+
 
   listarProfissionalTI() {
     this.profisionalService.getProfissional().subscribe(resp => {
@@ -55,7 +61,7 @@ export class ListaUsuariosComponent {
           id: p.idProfissional,
           cpf: p.cpf,
           nome: p.nome,
-          atuacao: "TI"
+          atuacao: "Administrador"
         }));
 
       this.newProfissional.push(...tiProfissionais);
@@ -72,7 +78,6 @@ export class ListaUsuariosComponent {
           atuacao: "Médico"
         }));
 
-      // ✅ Adiciona na lista sem sobrescrever
       this.newProfissional = [...this.newProfissional, ...medicosFiltrados];
     });
   }
@@ -87,9 +92,7 @@ export class ListaUsuariosComponent {
           atuacao: "Enfermeiro"
         }));
 
-      // ✅ Adiciona na lista sem sobrescrever
       this.newProfissional = [...this.newProfissional, ...enfermeirosFiltrados];
-      this.newProfissional = this.newProfissional.sort((a, b) => a.nome.localeCompare(b.nome));
       this.newProfissionalOriginal = [...this.newProfissional]
 
     });
@@ -97,11 +100,9 @@ export class ListaUsuariosComponent {
 
   pesquisar(nome: string) {
     this.buscou = true;
-   
-    if (!nome || nome.trim() === '') {
-      this.newProfissionalPesquisa = [...this.newProfissional];
-      this.newProfissional = [...this.newProfissionalOriginal];
 
+    if (!nome || nome.trim() === '') {
+      this.newProfissionalPesquisa = [];
       return;
     }
 
@@ -109,7 +110,10 @@ export class ListaUsuariosComponent {
     this.newProfissionalPesquisa = this.newProfissional.filter(p =>
       p.nome.toLowerCase().includes(termo)
     );
-    this.newProfissional = this.newProfissionalPesquisa;
+  }
+
+  irParaUsuario(id: String) {
+    this.router.navigate(['/gerenciar-usuario', id]);
   }
 
 }

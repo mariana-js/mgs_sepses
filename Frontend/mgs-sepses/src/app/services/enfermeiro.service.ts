@@ -16,7 +16,7 @@ export class EnfermeiroService {
   }
 
   addEnfermeiro(enfermeiro: Enfermeiro): Observable<Enfermeiro> {
-    enfermeiro.idprofissional = uuidv4();
+    // enfermeiro.idprofissional = uuidv4();
     this.enfermeiro.push(enfermeiro);
     return this.http.post<Enfermeiro>(this.api, enfermeiro);
   }

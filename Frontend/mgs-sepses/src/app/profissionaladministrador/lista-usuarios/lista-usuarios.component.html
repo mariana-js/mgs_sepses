@@ -1,17 +1,23 @@
-<div> <!-- Global  -->
+<div class="global"> <!-- Global  -->
 
-  <div><!-- Container  -->
+  <div class="cont"><!-- Container  -->
 
-    <div><!-- Pesquisa de usuario  -->
+    <div class="cont-painel">
 
-      <form action="Post">
-        <input type="text" placeholder="Insira o nome do profissional." [(ngModel)]="nome" name="nome"
-          (input)="pesquisar(nome)">
-      </form>
-      <span *ngIf="buscou === true && newProfissionalPesquisa.length === 0 && this.nome !== '' ">Nenhum profissional foi
+
+    <div class="container-pesquisa"><!-- Pesquisa de usuario  -->
+
+      <div class="campo-pesquisa" >
+        <form action="Post">
+          <input type="text" placeholder="Insira o nome do profissional." [(ngModel)]="nome" name="nome"
+            (input)="pesquisar(nome)">
+        </form>
+      </div>
+
+      <span class="campo-pesquisa" *ngIf="buscou === true && newProfissionalPesquisa.length === 0 && this.nome !== '' ">Nenhum profissional foi
         encontrado.</span>
     </div>
-    <div> <!-- Lista dos usuarios - Tabela  -->
+    <div class="cont-tabela"> <!-- Lista dos usuarios - Tabela  -->
 
       <table>
         <thead>
@@ -23,8 +29,7 @@
         </thead>
 
         <tbody>
-          <tr
-            *ngFor="let profissionais of (newProfissionalPesquisa.length > 0 ? newProfissionalPesquisa : newProfissional)">
+          <tr (click)="irParaUsuario(profissionais.id)" *ngFor="let profissionais of (newProfissionalPesquisa.length > 0 ? newProfissionalPesquisa : newProfissional)">
             <td>{{profissionais.cpf}}</td>
             <td>{{profissionais.nome}}</td>
             <td>{{profissionais.atuacao}}</td>
@@ -37,5 +42,5 @@
     </div>
 
   </div>
-
+</div>
 </div>

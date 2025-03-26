@@ -12,16 +12,17 @@ import { OutrasOpcoesComponent } from '../profissionaladministrador/outras-opcoe
 import { ListaPacientesComponent } from '../profissionalsaude/lista-pacientes/lista-pacientes.component';
 
 export const routes: Routes = [
-  {path: '', component: LoginComponent},
   {path: 'login', component: LoginComponent},
   {path: 'recuperar-senha', component: RecuperarSenhaComponent},
   {path: 'pacientes', component: ListaPacientesComponent},
   {path: 'usuarios', component: ListaUsuariosComponent},
   {path: 'gerenciar-usuario', component: GerenciarUsuarioComponent},
+  {path: 'gerenciar-usuario/:id', component: GerenciarUsuarioComponent},
   {path: 'hospitais', component: ListaHospitaisComponent},
   {path: 'gerenciar-hospital', component: GerenciarHospitalComponent},
+  {path: 'gerenciar-hospital/:id', component: GerenciarHospitalComponent},
   {path: 'lista-logs', component: ListaLogsComponent},
-  {path: 'log', component: LogDescricaoComponent},
+  {path: 'log/:id', component: LogDescricaoComponent},
   {path: 'outras-opcoes', component: OutrasOpcoesComponent}
 ];
 

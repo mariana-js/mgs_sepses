@@ -1,0 +1,13 @@
+td:nth-child(2), th:nth-child(2) {
+  white-space: nowrap;
+}
+
+input[type="date"] {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: inherit;
+  width: 7rem;
+  display: inline;
+  color: #6582ad;
+}

@@ -5,6 +5,5 @@ drop table paciente;
 drop table log;
 drop table enfermeiro;
 drop table medico;
-drop table hos_prof;
 drop table profissional;
 drop table hospital;

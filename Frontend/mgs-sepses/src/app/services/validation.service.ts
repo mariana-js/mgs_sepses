@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ProfissionalService } from './profissional.service';
 import { Profissional } from '../models/profissional';
+import { HospitalService } from './hospital.service';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +16,13 @@ export class ValidationService {
   resposta: string[] = [];
   usuario: Profissional | undefined;
 
-  constructor(private readonly profissional: ProfissionalService) { }
+  constructor(
+    private readonly profissional: ProfissionalService,
+    private readonly hospitalService: HospitalService
+  ) { }
 
 
+  // Autenticação
   async validationLogin(cpf: string, senha: string): Promise<string[]> {
     this.mensagem = [];
     if (!cpf || !senha) this.mensagem.push('Campo(s) vazio(s).');
@@ -83,5 +89,65 @@ export class ValidationService {
     return rest(10) === digits[9] && rest(11) === digits[10];
   }
 
+  // Validador de CNPJ
 
+
+  // Profissional
+
+  async validationProfissional(
+    cpf: string,
+    senha: string,
+    nome: string,
+    email: string,
+    profissional: string,
+    codigo?: string,
+    estado?: string
+  ): Promise<string[]> {
+    const mensagens: string[] = [];
+
+    if (!cpf || !senha || !nome || !email) {
+      mensagens.push('Campo(s) vazio(s).');
+    } else if ((profissional === 'medico' || profissional === 'enfermeiro') && (!codigo || !estado)) {
+      mensagens.push('Necessário inserir estado e uf!');
+    } else if (!this.isValidCPF(cpf)) {
+      mensagens.push('CPF inválido!');
+    }
+
+    return mensagens;
+  }
+
+  async validationProfAdicionar(cpf: string): Promise<string[]> {
+    const mensagens: string[] = [];
+    try {
+      const usuarioEncontrado = await firstValueFrom(this.profissional.buscarProfissional(cpf));
+      if (usuarioEncontrado) {
+        mensagens.push('CPF já cadastrado no sistema!');
+      }
+    } catch (error) {
+      console.error('Erro ao buscar profissional:', error);
+    }
+    return mensagens;
+  }
+
+  async validationHospAdicionar(cnpj: string): Promise<string[]> {
+    const mensagens: string[] = [];
+    try {
+      const hospitalEncontrado = await firstValueFrom(this.hospitalService.buscarHospitalCNPJ(cnpj));
+      if (hospitalEncontrado) {
+        mensagens.push('CNPJ já cadastrado no sistema!');
+      }
+    } catch (error) {
+      console.error('Erro ao buscar hospital:', error);
+    }
+    return mensagens;
+  }
+
+  // Hospital
+  async validationHospital(cnpj: string, razaosocial: string, nomefantasia: string): Promise<string[]> {
+    this.mensagem = [];
+    if (!cnpj || !razaosocial || !nomefantasia) this.mensagem.push('Campo(s) vazio(s).');
+    else if (cnpj.length !== 14) this.mensagem.push('O CNPJ deve conter 14 digítos!')
+    this.resposta = [...this.mensagem];
+    return this.resposta;
+  }
 }

@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { Profissional } from '../../models/profissional';
+import { ConexaoService } from '../../services/conexao.service';
 
 @Component({
   selector: 'app-recuperar-senha',
@@ -27,13 +28,13 @@ export class RecuperarSenhaComponent {
   profissionais: Profissional[] = [];
 
   newLog: Log = {
-    id_log: '',
+    idLog: '',
     idProfissional: '',
     data: new Date(),
     descricao: ''
   }
   newProfissional: Profissional = {
-    id_hospital: '',
+    idHospital: '',
     idProfissional: '',
     nome: '',
     cpf: '',
@@ -48,6 +49,7 @@ export class RecuperarSenhaComponent {
     private readonly validation: ValidationService,
     private readonly logService: LogService,
     private readonly profisional: ProfissionalService,
+    private readonly conexaoService: ConexaoService,
     private readonly router: Router
   ) { }
 
@@ -66,6 +68,7 @@ export class RecuperarSenhaComponent {
           if (this.newProfissional !== undefined) {
            this.addlog();
             await this.profisional.updateProfissional(this.newProfissional).toPromise();
+            this.conexaoService.setProfissional(this.usuario);
           }
           alert('Senha alterada com sucesso!');
           this.router.navigate([this.usuario.admin ? '/usuarios' : '/pacientes']);

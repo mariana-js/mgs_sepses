@@ -16,7 +16,7 @@ export class SituacaoAdversaService {
   }
 
   addSituacaoAdversa(situacao: SituacaoAdversa): Observable<SituacaoAdversa> {
-    situacao.id = uuidv4();
+    // situacao.id = uuidv4();
     this.situacao.push(situacao);
     return this.http.post<SituacaoAdversa>(this.api, situacao);
   }

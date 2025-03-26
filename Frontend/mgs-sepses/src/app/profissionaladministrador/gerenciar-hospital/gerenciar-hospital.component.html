@@ -1,12 +1,43 @@
-<div> <!-- Global  -->
+<div class="global"> <!-- Global  -->
 
-  <div><!-- Container  -->
+  <div class="cont"> <!-- Container  -->
+
+    <div class="cont-painel">
+
+      <div class="title-gerenciar">
+        <h2>HOSPITAL</h2>
+      </div>
+      <div class="mensagem-erro">
+        <span>{{mensage}}</span>
+      </div>
+
+      <div class="formulario-gerenciar">
+        <span class="mensagem-status">{{msgStatus}}</span>
+        <form action="post">
+          <input type="text" placeholder="Razão Social" [(ngModel)]="razaosocial" name="razaosocial">
+          <input type="text" placeholder="Nome Fantasia" [(ngModel)]="nomefantasia" name="nomefantasia">
 
 
-    <div>
-      <p>gerenciar-hospital works!</p>
+          <div class="cnpj-status">
+            <input  type="text" placeholder="CNPJ" [(ngModel)]="cnpj" name="cnpj">
+
+            <div (click)="st=!st" class="status"> Status</div>
+            <div *ngIf="st===true" class="options-status">
+              <button (click)="status=true; msgStatus = 'Status: Ativo'; st=!st" type="button">Ativo</button>
+              <button (click)="status=false; msgStatus = 'Status: Desativado';st=!st" type="button">Desativado</button>
+            </div>
+
+          </div>
+
+          <div class="botoes">
+            <button routerLink="/hospitais" type="button">Cancelar</button>
+            <button (click)="salvar()" type="button">Salvar</button>
+          </div>
+
+        </form>
+      </div>
+
     </div>
-
   </div>
-
 </div>
+<router-outlet></router-outlet>

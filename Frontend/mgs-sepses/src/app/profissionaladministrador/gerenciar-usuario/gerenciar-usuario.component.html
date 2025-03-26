@@ -1,12 +1,65 @@
-<div> <!-- Global  -->
+<div class="global">
 
-  <div><!-- Container  -->
+  <div class="cont">
+
+    <div class="cont-painel">
 
 
-    <div>
-      <p>gerenciar-usuario works!</p>
+
+      <div class="title-gerenciar">
+        <h2>USUÁRIO</h2>
+      </div>
+      <div class="mensagem-erro">
+        <span>{{mensage}}</span>
+      </div>
+      <div class="formulario-gerenciar">
+
+        <span class="mensagem-status">{{msgStatus}}</span>
+        <span *ngIf="profissional !== ''" >Profissional: {{profissional}}</span>
+
+        <form action="post">
+          <input type="text" placeholder="Nome" [(ngModel)]="nome" name="nome">
+
+          <div class="email-cpf">
+
+            <input class="email" type="text" placeholder="Email" [(ngModel)]="email" name="email">
+            <input class="cpf" type="text" placeholder="CPF" [(ngModel)]="cpf" name="cpf">
+
+          </div>
+
+          <div class="profissional-atuacao">
+
+            <div (click)="prof=!prof" class="status profissional" > Profissional</div>
+            <div *ngIf="prof===true">
+              <button (click)="profissional='admin'" type="button">Administrador</button>
+              <button (click)="profissional='medico'" type="button">Médico</button>
+              <button (click)="profissional='enfermeiro'" type="button">Enfermeiro</button>
+            </div>
+
+            <input class="codigo" type="text" placeholder="Código" [(ngModel)]="codigo" name="codigo">
+            <input class="uf" type="text" placeholder="UF" [(ngModel)]="estado" name="estado">
+
+          </div>
+
+          <div class="senha-status">
+
+            <input class="senha" type="password" placeholder="Senha" [(ngModel)]="senha" name="senha">
+            <div (click)="st=!st" class="status"> Status</div>
+            <div *ngIf="st===true">
+              <button (click)="this.status=true; msgStatus = 'Status: Ativo'" type="button">Ativo</button>
+              <button (click)="this.status=false; msgStatus = 'Status: Desativado'" type="button">Desativado</button>
+            </div>
+
+          </div>
+          <div class="botoes">
+            <button (click)="telaAnterior()" type="button">Cancelar</button>
+            <button (click)="salvar()" type="button">Salvar</button>
+          </div>
+
+        </form>
+      </div>
+
     </div>
-
   </div>
-
 </div>
+<router-outlet></router-outlet>

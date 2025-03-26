@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { Hospital } from '../../models/hospital';
 import { HospitalService } from '../../services/hospital.service';
-import { CommonModule, NgFor } from '@angular/common';
+import { CommonModule, NgClass, NgFor } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
@@ -17,6 +17,7 @@ export class ListaHospitaisComponent {
   newHospitalPesquisa: Hospital[] = [];
   hospital: Hospital[] = [];
   hospitalOriginal: Hospital[] = [];
+  buscou: boolean = false;
 
   constructor(
     private readonly hospitalService: HospitalService,
@@ -34,9 +35,12 @@ export class ListaHospitaisComponent {
     this.hospital = this.hospital.sort((a, b) => a.razaosocial.localeCompare(b.razaosocial));
 
   }
-
+  irParaHospital(id: string) {
+    this.router.navigate(['/gerenciar-hospital', id]);
+  }
 
   pesquisar(razao: string) {
+    this.buscou = true;
     if (!razao || razao.trim() === '') {
       this.newHospitalPesquisa = [];
       this.hospital = [...this.hospitalOriginal];

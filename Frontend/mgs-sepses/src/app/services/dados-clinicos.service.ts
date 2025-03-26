@@ -16,7 +16,7 @@ export class DadosClinicosService {
   }
 
   addDadosClinicos(dados: DadosClinicos): Observable<DadosClinicos> {
-    dados.id = uuidv4();
+    // dados.id = uuidv4();
     this.dados.push(dados);
     return this.http.post<DadosClinicos>(this.api, dados);
   }

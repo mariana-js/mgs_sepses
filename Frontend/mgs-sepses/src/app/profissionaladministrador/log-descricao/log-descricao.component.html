@@ -1,12 +1,35 @@
-<div> <!-- Global  -->
+<div class="global"> <!-- Global  -->
 
-  <div><!-- Container  -->
+  <div class="cont"><!-- Container  -->
 
+    <div class="cont-painel">
 
-    <div>
-      <p>log-descricao works!</p>
+      <div class="voltar">
+        <a routerLink="/lista-logs">
+          << Voltar para a página anterior </a>
+      </div>
+
+      <div class="pagina-log">
+
+        <div class="data-log">
+          <span>{{log?.data}}</span>
+        </div>
+
+        <div class="dados-log">
+
+          <div class="descricao-log">
+            <span>{{log?.descricao}}</span>
+          </div>
+          <div class="responsavel-dados-log">
+            <span class="nome">{{profissional?.nome}}</span>
+            <span class="cpf">{{profissional?.cpf}}</span>
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
-
   </div>
 
 </div>

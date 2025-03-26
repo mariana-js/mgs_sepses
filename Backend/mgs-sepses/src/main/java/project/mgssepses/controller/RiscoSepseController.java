@@ -23,8 +23,10 @@ import project.mgssepses.dtos.RiscoSepseDto;
 import project.mgssepses.model.RiscoSepse;
 import project.mgssepses.service.RiscoSepseService;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 @RestController
 @RequestMapping("/paciente/risco_sepse")
+@CrossOrigin(origins = "http://localhost:4200")
 public class RiscoSepseController {
     final RiscoSepseService riscoService;
     private final Logger log = LoggerFactory.getLogger(RiscoSepseController.class);

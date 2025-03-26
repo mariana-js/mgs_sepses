@@ -1,41 +1,46 @@
-<div> <!-- Global  -->
+<div class="global"> <!-- Global  -->
 
-  <div><!-- Container  -->
+  <div class="cont"><!-- Container  -->
 
-    <div><!-- Pesquisa de log por data  -->
+    <div class="cont-painel">
 
-      <form action="Post">
-        <label for="data">Selecione uma data:</label>
-        <input type="date" [(ngModel)]="data" name="data" (input)="pesquisar(data)" placeholder="data" />
-      </form>
 
-      <span *ngIf="buscou === true && logsFiltrados.length === 0 ">Sem logs na data selecionada.</span>
+      <div class="pesquisa"><!-- Pesquisa de log por data  -->
+
+        <form action="Post">
+          <label for="data">Selecione uma data:</label>
+          <input type="date" [(ngModel)]="data" name="data" (input)="pesquisar(data)" placeholder="data" />
+        </form>
+
+        <span *ngIf="buscou === true && logsFiltrados.length === 0 ">Sem logs na data selecionada.</span>
+
+
+      </div>
+
+      <div class="cont-tabela"> <!-- Lista dos usuarios - Tabela  -->
+
+        <table>
+          <thead>
+            <tr>
+              <th>Descrição</th>
+              <th>Data</th>
+
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr (click)="irParaLog(logs)" *ngFor="let logs of (logsFiltrados.length > 0 ? logsFiltrados : log)">
+              <td>{{logs.descricao}}</td>
+              <td>{{logs.data}}</td>
+            </tr>
+
+          </tbody>
+        </table>
+
+      </div>
+
     </div>
-
-    <div> <!-- Lista dos usuarios - Tabela  -->
-
-      <table>
-        <thead>
-          <tr>
-            <th>Descricao</th>
-            <th>Data</th>
-            <!-- <th>Horário</th> -->
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr *ngFor="let logs of (logsFiltrados.length > 0 ? logsFiltrados : log)">
-            <td>{{logs.descricao}}</td>
-            <td>{{logs.data}}</td>
-            <!-- <td>{{logs.hora}}</td> -->
-          </tr>
-
-
-        </tbody>
-      </table>
-
-    </div>
-
   </div>
-
 </div>
+<router-outlet></router-outlet>

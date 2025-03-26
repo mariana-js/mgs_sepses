@@ -16,7 +16,7 @@ export class MedicoService {
   }
 
   addMedico(medico: Medico): Observable<Medico> {
-    medico.idprofissional = uuidv4();
+    // medico.idprofissional = uuidv4();
     this.medico.push(medico);
     return this.http.post<Medico>(this.api, medico);
   }

@@ -1,5 +1,5 @@
 export interface Hospital {
-  id_hospital: string;
+  idHospital: string;
   razaosocial: string;
   nomefantasia: string;
   cnpj: string;

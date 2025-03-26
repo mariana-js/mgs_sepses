@@ -30,6 +30,7 @@
   padding: 0px 0.3rem 0 0.3rem;
   justify-content: center;
 }
+
 .ativo-head {
   color: white;
   background-color: #98AECE;
@@ -37,7 +38,7 @@
 }
 
 .desativo-head span,
-.ativo-head{
+.ativo-head {
   padding: 0px 0.3rem 0 0.3rem;
   text-decoration: none;
   height: 2rem;
@@ -51,6 +52,7 @@
   font-weight: bold;
   cursor: default;
 }
+
 .desativo-head {
   border: 2px solid #98AECE;
   background-color: white;
@@ -58,8 +60,29 @@
   color: #98AECE;
 }
 
-.desativo-head:hover{
-  background-color:  #98AECE;
+.desativo-head:hover {
+  background-color: #98AECE;
   color: white;
   transition: 0.5s;
+}
+
+.containers {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.sair img {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.1rem;
+}
+
+.sair{
+  cursor: pointer;
+  margin-right: 2rem;
+  font-size: small;
+  color: #98AECE;
+  display: flex
+;
 }

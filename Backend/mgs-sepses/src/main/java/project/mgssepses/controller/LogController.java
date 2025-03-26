@@ -21,8 +21,10 @@ import project.mgssepses.dtos.LogDto;
 import project.mgssepses.model.LogModel;
 import project.mgssepses.service.LogService;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 @RestController
 @RequestMapping("/log")
+@CrossOrigin(origins = "http://localhost:4200")
 public class LogController {
     final LogService logService;
 

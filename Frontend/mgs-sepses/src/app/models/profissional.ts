@@ -1,5 +1,5 @@
 export interface Profissional {
-  id_hospital: string;
+  idHospital: string;
   idProfissional: string;
   nome: string;
   cpf: string;

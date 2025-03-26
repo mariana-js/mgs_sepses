@@ -1,0 +1,72 @@
+<div class="global"> <!-- Global  -->
+
+  <div class="cont"><!-- Container  -->
+
+    <div class="cont-painel">
+
+
+      <div class="title-gerenciar">
+        <h2>DADOS DO PACIENTE</h2>
+      </div>
+
+      <div class="dashboard">
+
+        <div class="ultima-atualizacao">
+          <span>Última atualização em {{paciente?.dataAlteracao}}.</span>
+        </div>
+
+        <div class="dash">
+
+
+          <div class="dashboard-dados">
+
+            <div class="dashboard-nome">
+              <span>NOME: {{paciente?.nome}}</span>
+            </div>
+
+            <div class="dashboard-dados-others">
+              <div class="space">
+                <span>IDADE: {{idade}} anos.</span>
+                <span>SEXO: {{paciente?.sexo}}</span>
+              </div>
+
+              <div class="space mais">
+                <span>DADOS CLÍNICOS</span>
+                <span>SITUAÇÃO ADVERSA</span>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="dashboard-risco">
+            <span>
+
+              RISCO <br>
+              DE <br>
+              SEPSE: <br><br>
+              {{paciente?.riscoSepse}}
+
+            </span>
+          </div>
+        </div>
+
+        <div class="options-paciente">
+          <div class="op">
+            <span>
+              <a routerLink="/gerenciar-paciente">Dados Pessoais</a>
+            </span>
+            <span>Relatório</span>
+          </div>
+          <div>
+            <span>{{status}}</span>
+          </div>
+
+
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>

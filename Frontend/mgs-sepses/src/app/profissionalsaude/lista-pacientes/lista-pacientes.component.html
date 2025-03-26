@@ -1,1 +1,46 @@
-<p>lista-pacientes works!</p>
+<div class="global"> <!-- Global  -->
+
+  <div class="cont"><!-- Container  -->
+
+    <div class="cont-painel">
+
+
+    <div class="container-pesquisa"><!-- Pesquisa de usuario  -->
+
+      <div class="campo-pesquisa" >
+        <form action="Post">
+          <input type="text" placeholder="Pesquisar nome do paciente." [(ngModel)]="nome" name="nome"
+            (input)="pesquisar(nome)">
+        </form>
+      </div>
+
+      <span class="campo-pesquisa" *ngIf="buscou === true && pacientePesquisa.length === 0 && this.nome !== '' ">Nenhum profissional foi
+        encontrado.</span>
+    </div>
+    <div class="cont-tabela"> <!-- Lista dos usuarios - Tabela  -->
+
+      <table>
+        <thead>
+          <tr>
+            <th>Risco</th>
+            <th>Profissional</th>
+            <th>Atuação</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr (click)="irParaPaciente(pacientes.idPaciente)" *ngFor="let pacientes of (pacientePesquisa.length > 0 ? pacientePesquisa : paciente)">
+            <td>{{pacientes.riscoSepse}}</td>
+            <td>{{pacientes.nome}}</td>
+            <td>{{pacientes.cpf}}</td>
+          </tr>
+
+
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
+</div>
+</div>

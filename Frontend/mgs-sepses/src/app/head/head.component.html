@@ -1,7 +1,7 @@
 <div class="global-head">
 
   <div>
-      <div class="containers">
+    <div class="containers">
       <div class="sair" *ngIf="!rotaAtual.includes('login') && !rotaAtual.includes('recuperar-senha') "
         (click)="sair()">
         <img src="icones/sair.png" alt="Sair">
@@ -18,10 +18,8 @@
           <span>Lista de usuários</span>
         </div>
 
-        <div routerLink="/lista-logs"
-          *ngIf="(rotaAtual.includes('lista-logs'))
-          && !rotaAtual.includes('login')"
-          [ngClass]="{
+        <div routerLink="/lista-logs" *ngIf="(rotaAtual.includes('lista-logs'))
+          && !rotaAtual.includes('login')" [ngClass]="{
       'ativo-head': rotaAtual.includes('/lista-logs'),
       'desativo-head': rotaAtual.includes('/log')
     }">
@@ -33,6 +31,14 @@
       'desativo-head': rotaAtual.includes('/gerenciar-hospital')
     }">
           <span>Lista de Hospitais</span>
+        </div>
+
+        <div routerLink="/pacientes" *ngIf="rotaAtual.includes('pacientes')
+        || rotaAtual.includes('/gerenciar-paciente')  || rotaAtual.includes('/paciente') " [ngClass]="{
+       'ativo-head': rotaAtual.includes('/pacientes'),
+       'desativo-head': rotaAtual.includes('/gerenciar-paciente')  || rotaAtual.includes('/paciente')
+     }">
+          <span>Lista de pacientes</span>
         </div>
 
         <!-- Central -->
@@ -49,6 +55,14 @@
       'desativo-head': rotaAtual.includes('/usuarios') || rotaAtual.includes('/lista-logs') || rotaAtual.includes('/hospitais')
     }">
           <span>Outras Opções</span>
+        </div>
+
+        <div routerLink="/gerenciar-paciente" *ngIf="rotaAtual.includes('pacientes')
+        || rotaAtual.includes('/gerenciar-paciente') || rotaAtual.includes('/paciente')" [ngClass]="{
+       'ativo-head': rotaAtual.includes('/gerenciar-paciente'),
+       'desativo-head': rotaAtual.includes('/pacientes') || rotaAtual.includes('/paciente')
+     }">
+          <span>Gerenciar Paciente</span>
         </div>
       </div>
     </div>

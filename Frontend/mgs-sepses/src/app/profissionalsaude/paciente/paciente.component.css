@@ -1,0 +1,91 @@
+.ultima-atualizacao {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  font-size: 11px;
+}
+
+.dashboard,
+.dashboard-dados {
+  display: grid;
+  width: 100%;
+}
+
+.ultima-atualizacao span,
+.dashboard-nome span,
+.space span,
+.mais span {
+  color: #5985c5;
+  font-weight: bolder;
+  letter-spacing: 1.5px;
+}
+
+.dashboard-dados-others {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.dash {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.dashboard-risco {
+  display: flex;
+  text-align: center;
+}
+
+.space {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.space span {
+  width: 42.5%;
+
+}
+
+.mais {
+  height: 8rem;
+}
+
+.mais span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard-dados .dashboard-nome span {
+  width: 95%;
+  display: flex;
+}
+
+.dashboard-risco {
+  background-color: #03A300;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  width: 8rem;
+  height: 13rem;
+  border-radius: 10px;
+  align-items: center;
+  margin-left: 1rem;
+  font-size: 14px;
+  color: white;
+  font-weight: bold;
+}
+
+.options-paciente {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.options-paciente .op {
+  display: flex;
+  flex-direction: column;
+}

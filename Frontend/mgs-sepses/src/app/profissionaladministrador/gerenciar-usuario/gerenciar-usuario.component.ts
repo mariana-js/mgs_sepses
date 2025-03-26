@@ -2,7 +2,8 @@ import { CommonModule, NgIf } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { Enfermeiro } from '../../models/enfermeiro';
 import { Log } from '../../models/log';
 import { Medico } from '../../models/medico';
@@ -12,8 +13,6 @@ import { EnfermeiroService } from '../../services/enfermeiro.service';
 import { LogService } from '../../services/log.service';
 import { MedicoService } from '../../services/medico.service';
 import { ProfissionalService } from '../../services/profissional.service';
-import { forkJoin } from 'rxjs';
-import { subscribe } from 'node:diagnostics_channel';
 import { ValidationService } from '../../services/validation.service';
 
 @Component({

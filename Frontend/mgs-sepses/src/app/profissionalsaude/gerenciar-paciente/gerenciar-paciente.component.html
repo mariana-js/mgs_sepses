@@ -1,0 +1,55 @@
+<div class="global">
+
+  <div class="cont">
+
+    <div class="cont-painel">
+
+      <div class="title-gerenciar">
+        <h2>PACIENTE</h2>
+      </div>
+      <div class="mensagem-erro">
+        <span>{{mensage}}</span>
+      </div>
+      <div class="formulario-gerenciar">
+
+        <span class="mensagem-status">{{msgStatus}}</span>
+        <span class="mensagem-status">{{msgSexo}}</span>
+
+        <form action="post">
+          <input type="text" placeholder="Nome" [(ngModel)]="nome" name="nome">
+
+          <input class="cpf" type="text" placeholder="CPF" [(ngModel)]="cpf" name="cpf">
+          <input class="dataNascimento" type="date" placeholder="Data Nascimento" [(ngModel)]="dataNascimento"
+            name="dataNascimento">
+
+          <input class="celular1" type="celular1" placeholder="Celular 1" [(ngModel)]="celular1" name="celular1">
+          <input class="celular2" type="celular2" placeholder="Celular 2" [(ngModel)]="celular2" name="celular2">
+
+          <div class="sexo">
+            <div (click)="sx=!sx" class="status">Sexo</div>
+            <div *ngIf="sx===true">
+              <button (click)="this.sexo='Feminino'; msgSexo = 'Sexo: Feminino'" type="button">Feminino</button>
+              <button (click)="this.sexo='Masculino'; msgSexo = 'Sexo: Masculino'" type="button">Masculino</button>
+            </div>
+          </div>
+
+          <div class="status">
+            <div (click)="st=!st" class="status">Sexo</div>
+            <div *ngIf="st===true">
+              <button (click)="this.ativo=true; msgStatus = 'Status: Ativo.' " type="button">Ativo</button>
+              <button (click)="this.ativo=false; msgStatus = 'Status: Desativado.' " type="button">Desativado</button>
+            </div>
+          </div>
+
+          <div class="botoes">
+            <button (click)="telaAnterior()" type="button">Cancelar</button>
+            <button (click)="salvar()" type="button">Salvar</button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>

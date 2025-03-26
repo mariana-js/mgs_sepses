@@ -19,6 +19,11 @@ export class PacienteService {
       map((pacientes: Paciente[]) => pacientes.find(paciente => paciente.cpf === cpf))
     );
   }
+  buscarPacienteID(id: string): Observable<Paciente | undefined> {
+    return this.getPaciente().pipe(
+      map((pacientes: Paciente[]) => pacientes.find(paciente => paciente.idPaciente === id))
+    );
+  }
 
   addPaciente(paciente: Paciente): Observable<Paciente> {
     this.paciente.push(paciente);
@@ -26,11 +31,11 @@ export class PacienteService {
   }
 
   updatePaciente(paciente: Paciente): Observable<Paciente> {
-    return this.http.put<Paciente>(`${this.api}/${paciente.id_paciente}`, paciente);
+    return this.http.put<Paciente>(`${this.api}/${paciente.idPaciente}`, paciente);
   }
 
   deletePaciente(id: string): Observable<void> {
-    this.paciente = this.paciente.filter(resp => resp.id_paciente !== id);
+    this.paciente = this.paciente.filter(resp => resp.idPaciente !== id);
     return this.http.delete<void>(`${this.api}/${id}`)
   }
 }

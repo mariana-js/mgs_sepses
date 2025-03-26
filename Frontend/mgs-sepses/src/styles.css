@@ -163,7 +163,8 @@ tbody td {
 }
 
 .formulario-gerenciar input,
-.status {
+.status ,
+.dashboard-dados span {
   border-radius: 10px;
   padding: 0.5rem 0.9rem;
   width: 100%;

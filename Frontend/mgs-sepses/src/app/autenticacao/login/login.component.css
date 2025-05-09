@@ -26,6 +26,7 @@
 .mensagem-autenticacao{
   height: 1.5rem;
   margin-bottom: -0.5rem;
+  display: grid;
 }
 .form-autenticacao,
 .button-autenticacao {

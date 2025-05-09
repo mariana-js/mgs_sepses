@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ProfissionalService } from './profissional.service';
+import { firstValueFrom } from 'rxjs';
 import { Profissional } from '../models/profissional';
 import { HospitalService } from './hospital.service';
-import { firstValueFrom } from 'rxjs';
+import { ProfissionalService } from './profissional.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +19,7 @@ export class ValidationService {
   constructor(
     private readonly profissional: ProfissionalService,
     private readonly hospitalService: HospitalService
+
   ) { }
 
 
@@ -62,7 +63,8 @@ export class ValidationService {
           } else if (op === 0) {
             if (this.usuario.senha !== senha) this.mensagem.push('Senha incorreta!');
           }
-        } else this.mensagem.push('Usuário não cadastrado no sistema, contacte a administração do sistema para o cadastro!');
+          if (this.usuario.status === false) this.mensagem.push('Usuário bloqueado, contactar o adminstrador do sistema!');
+        } else this.mensagem.push('Usuário não cadastrado, contactar o adminstrador do sistema!');
 
 
         this.resposta = [...this.mensagem];
@@ -95,6 +97,7 @@ export class ValidationService {
   // Profissional
 
   async validationProfissional(
+    idHospital: string,
     cpf: string,
     senha: string,
     nome: string,
@@ -104,14 +107,14 @@ export class ValidationService {
     estado?: string
   ): Promise<string[]> {
     const mensagens: string[] = [];
-
+    // const profssionalEncontrado = profissional.
     if (!cpf || !senha || !nome || !email) {
       mensagens.push('Campo(s) vazio(s).');
     } else if ((profissional === 'medico' || profissional === 'enfermeiro') && (!codigo || !estado)) {
       mensagens.push('Necessário inserir estado e uf!');
     } else if (!this.isValidCPF(cpf)) {
       mensagens.push('CPF inválido!');
-    }
+    } else if ( !idHospital) mensagens.push('É necessário selecionar o hospital!');
 
     return mensagens;
   }

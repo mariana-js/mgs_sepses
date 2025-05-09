@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { v4 as uuidv4 } from 'uuid';
 import { Profissional } from '../models/profissional';
 
 @Injectable({

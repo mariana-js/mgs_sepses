@@ -9,16 +9,29 @@
       <div class="title-gerenciar">
         <h2>USUÁRIO</h2>
       </div>
-      <div class="mensagem-erro">
-        <span>{{mensage}}</span>
-      </div>
+
       <div class="formulario-gerenciar">
 
-        <span class="mensagem-status">{{msgStatus}}</span>
-        <span *ngIf="profissional !== ''" >Profissional: {{profissional}}</span>
+        <div class="mensagens-topo">
+
+          <div class="informacoes">
+            <span class="mensagem-status">{{msgStatus}}</span>
+            <span *ngIf="profissional !== ''">Profissional: {{profissional}}</span>
+          </div>
+
+          <div class="mensagem-erro">
+            <span>{{mensage}}</span>
+          </div>
+        </div>
 
         <form action="post">
+          <div (click)="hosp=!hosp " class="status hospital"> {{nomeHospital}} </div>
+          <div *ngIf="hosp===true && !profissionalSelecionado" >
+            <button *ngFor="let hospitais of hospital" (click)="selecionarHospital(hospitais.idHospital)" type="button">{{hospitais.razaosocial}}</button>
+          </div>
+
           <input type="text" placeholder="Nome" [(ngModel)]="nome" name="nome">
+
 
           <div class="email-cpf">
 
@@ -29,15 +42,17 @@
 
           <div class="profissional-atuacao">
 
-            <div (click)="prof=!prof" class="status profissional" > Profissional</div>
-            <div *ngIf="prof===true">
+            <div (click)="prof=!prof " class="status profissional"> Profissional</div>
+            <div *ngIf="prof===true && !profissionalSelecionado">
               <button (click)="profissional='admin'" type="button">Administrador</button>
               <button (click)="profissional='medico'" type="button">Médico</button>
               <button (click)="profissional='enfermeiro'" type="button">Enfermeiro</button>
             </div>
 
-            <input class="codigo" type="text" placeholder="Código" [(ngModel)]="codigo" name="codigo">
-            <input class="uf" type="text" placeholder="UF" [(ngModel)]="estado" name="estado">
+            <input class="codigo" type="text" placeholder="Código" [(ngModel)]="codigo" name="codigo"
+              [disabled]="profissionalSelecionado!==undefined">
+            <input class="uf" type="text" placeholder="UF" [(ngModel)]="estado" name="estado"
+              [disabled]="profissionalSelecionado!==undefined">
 
           </div>
 

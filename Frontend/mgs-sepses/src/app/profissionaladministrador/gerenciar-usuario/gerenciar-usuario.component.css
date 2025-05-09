@@ -1,6 +1,6 @@
-.email-cpf ,
+.email-cpf,
 .profissional-atuacao,
-.senha-status{
+.senha-status {
   width: 100%;
   display: inline-flex;
   justify-content: space-between;
@@ -11,17 +11,32 @@
   width: 45%;
 }
 
-.profissional-atuacao .profissional{
+.profissional-atuacao .profissional {
   width: 13%;
 }
 
-.profissional-atuacao .codigo{
+.profissional-atuacao .codigo {
   width: 45%;
 }
-.profissional-atuacao .uf{
+
+.profissional-atuacao .uf {
   width: 5%;
 }
 
-.senha-status .senha{
-    width: 50%;
+.senha-status .senha {
+  width: 50%;
+}
+
+.mensagens-topo {
+  display: inline-flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mensagens-topo  .informacoes{
+  display: block;
+}
+.hospital{
+  width: 100%;
 }

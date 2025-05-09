@@ -1,9 +1,9 @@
-import { CommonModule, NgIf } from '@angular/common';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { forkJoin } from 'rxjs';
+import { firstValueFrom, forkJoin, tap } from 'rxjs';
 import { Enfermeiro } from '../../models/enfermeiro';
 import { Log } from '../../models/log';
 import { Medico } from '../../models/medico';
@@ -14,16 +14,19 @@ import { LogService } from '../../services/log.service';
 import { MedicoService } from '../../services/medico.service';
 import { ProfissionalService } from '../../services/profissional.service';
 import { ValidationService } from '../../services/validation.service';
+import { HospitalService } from '../../services/hospital.service';
+import { Hospital } from '../../models/hospital';
 
 @Component({
   selector: 'app-gerenciar-usuario',
-  imports: [CommonModule, FormsModule, HttpClientModule, RouterOutlet, NgIf],
+  imports: [CommonModule, FormsModule, HttpClientModule, RouterOutlet, NgIf, NgFor],
   templateUrl: './gerenciar-usuario.component.html',
   styleUrl: './gerenciar-usuario.component.css'
 })
 export class GerenciarUsuarioComponent {
   codProfissional: string = '';
   id: string = '';
+  idHospital: string = '';
   nome: string = '';
   email: string = '';
   cpf: string = '';
@@ -31,15 +34,20 @@ export class GerenciarUsuarioComponent {
   senha: string = '';
   codigo: string = '';
   profissional: string = '';
+  nomeHospital: string = 'Selecionar hospital';
   status: boolean = true;
   save: boolean = true;
+
+  hospitais: Hospital[] = [];
   enfermeiro: Enfermeiro[] = [];
+  hospital: Hospital[] = [];
   medico: Medico[] = [];
   mensage: string[] = [];
   usuario: Profissional | undefined;
 
   msgStatus: string = '';
   prof: boolean = false;
+  hosp: boolean = false;
   st: boolean = false;
 
   profissionalSelecionado: Profissional | undefined;
@@ -80,21 +88,34 @@ export class GerenciarUsuarioComponent {
     private readonly logService: LogService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly validationService: ValidationService
+    private readonly validationService: ValidationService,
+    private readonly hospitalService: HospitalService
+
   ) {
 
     this.route.params.subscribe(params => {
       const id = params['id'];
+
       this.profissionalService.buscarProfissionalId(id).subscribe(prof => {
         this.profissionalSelecionado = prof;
-        if (this.profissionalSelecionado) this.carregarDadosSelecionado();
+        if (this.profissionalSelecionado) {
+          this.carregarDadosSelecionado();
+        }
       });
+
+
+
     });
+  }
+
+  ngOnInit() {
+    if (!this.profissionalSelecionado) this.listaHospitais();
   }
 
   carregarDadosSelecionado() {
     if (this.profissionalSelecionado) {
       this.id = this.profissionalSelecionado.idProfissional;
+      this.idHospital = this.profissionalSelecionado.idHospital;
       this.nome = this.profissionalSelecionado.nome;
       this.email = this.profissionalSelecionado.email;
       this.cpf = this.profissionalSelecionado.cpf;
@@ -128,11 +149,28 @@ export class GerenciarUsuarioComponent {
       this.status = this.profissionalSelecionado.status
       if (this.status === true) this.msgStatus = "Status: Ativo";
       else this.msgStatus = "Status: Desativado";
-    }
-  }
 
+      this.buscarHospitalId(this.profissionalSelecionado.idHospital);
+
+    }
+
+  }
+  buscarHospitalId(id: string) {
+    this.hospitalService.buscarHospitalId(id)
+      .subscribe(hospital => {
+        this.nomeHospital = hospital?.razaosocial || '';
+      });
+
+  }
+  selecionarHospital(id: string) {
+    this.idHospital = id;
+    this.buscarHospitalId(id);
+    // console.log("Id: ", this.idHospital, "Razao: ", this.nomeHospital)
+    this.hosp = !this.hosp;
+  }
   async salvar() {
     const validacao = await this.validationService.validationProfissional(
+      this.idHospital,
       this.cpf,
       this.senha,
       this.nome,
@@ -160,13 +198,17 @@ export class GerenciarUsuarioComponent {
       this.mensage = validacao;
     }
   }
-
-
+  listaHospitais() {
+    this.hospitalService.getHospital().subscribe(res => {
+      this.hospital = res;
+      // console.log('Hospitais: ', this.hospital)
+    })
+  }
   atualizarProfissional() {
     const conexao = this.conexaoService.getProfissional();
     if (conexao) {
       this.newUsuario.idProfissional = this.profissionalSelecionado!.idProfissional;
-      this.newUsuario.idHospital = conexao.idHospital;
+      this.newUsuario.idHospital = this.idHospital;
       this.newUsuario.nome = this.nome;
       this.newUsuario.email = this.email;
       this.newUsuario.cpf = this.cpf;
@@ -246,7 +288,7 @@ export class GerenciarUsuarioComponent {
     const conexao = this.conexaoService.getProfissional();
     if (conexao) {
 
-      this.newUsuario.idHospital = conexao.idHospital;
+      this.newUsuario.idHospital = this.idHospital;
       this.newUsuario.nome = this.nome;
       this.newUsuario.email = this.email;
       this.newUsuario.cpf = this.cpf;

@@ -30,7 +30,7 @@ import project.mgssepses.service.HosProfService;
 public class HosProfController {
 
     final HosProfService hosProfService;
-    private final Logger log = LoggerFactory.getLogger(HospitalController.class);
+    private final Logger log = LoggerFactory.getLogger(HosProfController.class);
 
     public HosProfController(HosProfService hosProfService) {
         this.hosProfService = hosProfService;

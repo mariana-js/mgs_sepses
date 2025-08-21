@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
 import { Medico } from '../models/medico';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -16,14 +16,18 @@ export class MedicoService {
   }
 
   addMedico(medico: Medico): Observable<Medico> {
-    // medico.idprofissional = uuidv4();
     this.medico.push(medico);
     return this.http.post<Medico>(this.api, medico);
+  }
+  buscarCRM(crm: string): Observable<Medico | undefined> {
+    return this.getMedico().pipe(
+      map(medico => medico.find(medico => medico.crm === crm))
+    );
   }
 
   updateMedico(medico: Medico): Observable<Medico> {
     return this.http.put<Medico>(`${this.api}/${medico.idprofissional}`, medico);
-}
+  }
 
   deleteMedico(id: string): Observable<void> {
     this.medico = this.medico.filter(resp => resp.idprofissional !== id);

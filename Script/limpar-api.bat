@@ -1,6 +1,6 @@
 color a 
 
-cd D:\Projetos\MGS SEPSES\mgs_sepses\Backend\mgs-sepses
+cd D:\Projetos\mgs_sepses\Backend\mgs-sepses
 
 d:
 

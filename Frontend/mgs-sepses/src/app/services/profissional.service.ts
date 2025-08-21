@@ -19,6 +19,13 @@ export class ProfissionalService {
       map((profs: Profissional[]) => profs.find(prof => prof.idProfissional === id))
     );
   }
+
+  buscarEmail(email: string): Observable<Profissional | undefined> {
+    return this.getProfissional().pipe(
+      map(profissionais => profissionais.find(profissional => profissional.email === email))
+    );
+  }
+
   buscarProfissional(cpf: string): Observable<Profissional | undefined> {
     return this.getProfissional().pipe(
       map(profissionais => profissionais.find(profissional => profissional.cpf === cpf))

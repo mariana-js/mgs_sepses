@@ -14,12 +14,15 @@
       <div class="formulario-gerenciar">
         <span class="mensagem-status">{{msgStatus}}</span>
         <form action="post">
-          <input type="text" placeholder="Razão Social" [(ngModel)]="razaosocial" name="razaosocial">
-          <input type="text" placeholder="Nome Fantasia" [(ngModel)]="nomefantasia" name="nomefantasia">
+          <input type="text" placeholder="Razão Social" [(ngModel)]="razaosocial" name="razaosocial"
+          [disabled]="possuiProfCadastrado!==false">
+          <input type="text" placeholder="Nome Fantasia" [(ngModel)]="nomefantasia" name="nomefantasia"
+          [disabled]="possuiProfCadastrado!==false">
 
 
           <div class="cnpj-status">
-            <input  type="text" placeholder="CNPJ" [(ngModel)]="cnpj" name="cnpj">
+            <input  type="text" placeholder="CNPJ" [(ngModel)]="cnpj" name="cnpj"
+            [disabled]="possuiProfCadastrado!==false">
 
             <div (click)="st=!st" class="status"> Status</div>
             <div *ngIf="st===true" class="options-status">

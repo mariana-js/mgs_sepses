@@ -3,6 +3,8 @@ import { firstValueFrom } from 'rxjs';
 import { Profissional } from '../models/profissional';
 import { HospitalService } from './hospital.service';
 import { ProfissionalService } from './profissional.service';
+import { EnfermeiroService } from './enfermeiro.service';
+import { MedicoService } from './medico.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +20,8 @@ export class ValidationService {
 
   constructor(
     private readonly profissional: ProfissionalService,
+    private readonly enfermeiro: EnfermeiroService,
+    private readonly medico: MedicoService,
     private readonly hospitalService: HospitalService
 
   ) { }
@@ -27,7 +31,7 @@ export class ValidationService {
   async validationLogin(cpf: string, senha: string): Promise<string[]> {
     this.mensagem = [];
     if (!cpf || !senha) this.mensagem.push('Campo(s) vazio(s).');
-    else if (!this.isValidCPF(cpf)) this.mensagem.push('CPF inválido!');
+    // else if (!this.isValidCPF(cpf)) this.mensagem.push('CPF inválido!');
     else {
       const authMessages = await this.validationAuth(cpf, 0, senha);
       this.mensagem = [...authMessages];
@@ -41,7 +45,7 @@ export class ValidationService {
   async validationRecuperarSenha(cpf: string, senha1: string, senha2: string, senha3: string): Promise<string[]> {
     this.mensagem = [];
     if ((!cpf || !senha1 || !senha2 || !senha3)) this.mensagem.push('Campo(s) vazio(s).');
-    else if (!this.isValidCPF(cpf)) this.mensagem.push('CPF inválido!')
+    // else if (!this.isValidCPF(cpf)) this.mensagem.push('CPF inválido!')
     else if (senha2 !== senha3) this.mensagem.push('Os campos das senhas precisam ser iguais.');
     else if (senha1 === (senha2 && senha3)) this.mensagem.push('A nova senha não pode ser igual a anterior.');
     else {
@@ -97,7 +101,6 @@ export class ValidationService {
   // Profissional
 
   async validationProfissional(
-    idHospital: string,
     cpf: string,
     senha: string,
     nome: string,
@@ -107,30 +110,67 @@ export class ValidationService {
     estado?: string
   ): Promise<string[]> {
     const mensagens: string[] = [];
-    // const profssionalEncontrado = profissional.
     if (!cpf || !senha || !nome || !email) {
       mensagens.push('Campo(s) vazio(s).');
-    } else if ((profissional === 'medico' || profissional === 'enfermeiro') && (!codigo || !estado)) {
-      mensagens.push('Necessário inserir estado e uf!');
-    } else if (!this.isValidCPF(cpf)) {
-      mensagens.push('CPF inválido!');
-    } else if ( !idHospital) mensagens.push('É necessário selecionar o hospital!');
-
-    return mensagens;
-  }
-
-  async validationProfAdicionar(cpf: string): Promise<string[]> {
-    const mensagens: string[] = [];
-    try {
-      const usuarioEncontrado = await firstValueFrom(this.profissional.buscarProfissional(cpf));
-      if (usuarioEncontrado) {
-        mensagens.push('CPF já cadastrado no sistema!');
-      }
-    } catch (error) {
-      console.error('Erro ao buscar profissional:', error);
     }
+    if ((profissional === 'medico' || profissional === 'enfermeiro') && (!codigo || !estado)) {
+      mensagens.push('Necessário inserir UF!');
+    }
+     if (estado && estado.length !== 2) {
+      mensagens.push('UF deve conter exatamente 2 letras.');
+    }
+
+    // else if (!this.isValidCPF(cpf)) {
+    //   mensagens.push('CPF inválido!');
+    // }
+
     return mensagens;
   }
+
+  async validationEmailCpf(cpf: string, email: string, idAtual?: string): Promise<string[]> {
+  const mensagens: string[] = [];
+  try {
+    const usuarioCPF = await firstValueFrom(this.profissional.buscarProfissional(cpf));
+    if (usuarioCPF && usuarioCPF.idProfissional !== idAtual) {
+      mensagens.push('CPF já cadastrado no sistema!');
+    }
+
+    const usuarioEmail = await firstValueFrom(this.profissional.buscarEmail(email));
+    if (usuarioEmail && usuarioEmail.idProfissional !== idAtual) {
+      mensagens.push('Email já cadastrado no sistema!');
+    }
+  } catch (error) {
+    console.error('Erro ao buscar profissional:', error);
+  }
+  return mensagens;
+}
+
+
+  async validationEnfermeiro(coren: string, idAtual?: string): Promise<string[]> {
+  const mensagens: string[] = [];
+  try {
+    const registro = await firstValueFrom(this.enfermeiro.buscarCOREN(coren));
+    if (registro && registro.idprofissional !== idAtual) {
+      mensagens.push('COREN já cadastrado no sistema!');
+    }
+  } catch (error) {
+    console.error('Erro ao buscar enfermeiro coren:', error);
+  }
+  return mensagens;
+}
+
+  async validationMedico(crm: string, idAtual?: string): Promise<string[]> {
+  const mensagens: string[] = [];
+  try {
+    const registro = await firstValueFrom(this.medico.buscarCRM(crm));
+    if (registro && registro.idprofissional !== idAtual) {
+      mensagens.push('CRM já cadastrado no sistema!');
+    }
+  } catch (error) {
+    console.error('Erro ao buscar crm medico:', error);
+  }
+  return mensagens;
+}
 
   async validationHospAdicionar(cnpj: string): Promise<string[]> {
     const mensagens: string[] = [];

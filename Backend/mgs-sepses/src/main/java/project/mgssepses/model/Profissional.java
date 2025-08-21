@@ -22,9 +22,6 @@ public class Profissional implements Serializable  {
     @Column(name = "idprofissional")
 	private UUID idprofissional;
 
-    @Column(name = "id_hospital", nullable = false) 
-	private UUID idHospital;
-
 	@Column(name = "nome", nullable = false)
 	private String nome;
 
@@ -56,14 +53,6 @@ public class Profissional implements Serializable  {
 
     public void setIdProfissional(UUID idprofissional) {
         this.idprofissional = idprofissional;
-    }
-
-    public UUID getIdHospital() {
-        return idHospital;
-    }
-
-    public void setIdHospital(UUID idHospital) {
-        this.idHospital = idHospital;
     }
 
     public String getNome() {

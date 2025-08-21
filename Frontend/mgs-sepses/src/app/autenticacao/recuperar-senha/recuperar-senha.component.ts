@@ -34,7 +34,6 @@ export class RecuperarSenhaComponent {
     descricao: ''
   }
   newProfissional: Profissional = {
-    idHospital: '',
     idProfissional: '',
     nome: '',
     cpf: '',

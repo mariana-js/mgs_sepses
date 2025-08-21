@@ -1,21 +1,23 @@
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { ChangeDetectorRef, Component } from '@angular/core';
-import { FormControl, FormGroup, FormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { firstValueFrom, forkJoin, tap } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { Enfermeiro } from '../../models/enfermeiro';
+import { HosProf } from '../../models/hos-prof';
+import { Hospital } from '../../models/hospital';
 import { Log } from '../../models/log';
 import { Medico } from '../../models/medico';
 import { Profissional } from '../../models/profissional';
 import { ConexaoService } from '../../services/conexao.service';
 import { EnfermeiroService } from '../../services/enfermeiro.service';
+import { HosProfService } from '../../services/hos-prof.service';
+import { HospitalService } from '../../services/hospital.service';
 import { LogService } from '../../services/log.service';
 import { MedicoService } from '../../services/medico.service';
 import { ProfissionalService } from '../../services/profissional.service';
 import { ValidationService } from '../../services/validation.service';
-import { HospitalService } from '../../services/hospital.service';
-import { Hospital } from '../../models/hospital';
 
 @Component({
   selector: 'app-gerenciar-usuario',
@@ -43,6 +45,12 @@ export class GerenciarUsuarioComponent {
   hospital: Hospital[] = [];
   medico: Medico[] = [];
   mensage: string[] = [];
+  listaHospitaisSelecionados: Hospital[] = [];
+  listaHosProfs: HosProf[] = [];
+  listaHospitaisAdicionados: string[] = [];
+
+  // Guardando ids do hosprof para excluir ao salvar
+  listaRetirarHosProfs: string[] = [];
   usuario: Profissional | undefined;
 
   msgStatus: string = '';
@@ -53,7 +61,6 @@ export class GerenciarUsuarioComponent {
   profissionalSelecionado: Profissional | undefined;
 
   newUsuario: Profissional = {
-    idHospital: '',
     idProfissional: '',
     nome: '',
     cpf: '',
@@ -64,7 +71,6 @@ export class GerenciarUsuarioComponent {
     admin: false
 
   }
-
   newMedico: Medico = {
     idprofissional: '',
     crm: ''
@@ -80,6 +86,12 @@ export class GerenciarUsuarioComponent {
     data: new Date(),
     descricao: ''
   }
+
+  newHosProf: HosProf = {
+    id: '',
+    idprofissional: '',
+    idhospital: ''
+  }
   constructor(
     private readonly profissionalService: ProfissionalService,
     private readonly medicoService: MedicoService,
@@ -89,7 +101,8 @@ export class GerenciarUsuarioComponent {
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly validationService: ValidationService,
-    private readonly hospitalService: HospitalService
+    private readonly hospitalService: HospitalService,
+    private readonly hosProfService: HosProfService
 
   ) {
 
@@ -103,19 +116,42 @@ export class GerenciarUsuarioComponent {
         }
       });
 
-
-
     });
-  }
+  } ngOnInit() {
+    this.listaHospitais();
+  } addHospitalnaLista(id: string) {
+    const jaInserido = this.listaHospitaisAdicionados.find(idlista => idlista === id);
 
-  ngOnInit() {
-    if (!this.profissionalSelecionado) this.listaHospitais();
-  }
+    if (!jaInserido) {
+      this.listaHospitaisAdicionados.push(id);
+      this.listaHospitaisAdd();
+    }
 
-  carregarDadosSelecionado() {
+  } retirandoHospitaldaLista(id: string) {
+    this.listaRetirarHosProfs.push(id);
+
+    this.listaHospitaisAdicionados = this.listaHospitaisAdicionados.filter(idlista => idlista !== id);
+
+    this.listaHospitaisAdd();
+
+  } limparListadeHospitaisSelecionados() {
+    this.listaHospitaisAdicionados = [];
+  } listaHospitaisAdd() {
+    this.listaHospitaisSelecionados = [];
+    for (const id of this.listaHospitaisAdicionados) {
+      if (this.listaHospitaisAdicionados.filter(r => r === id)) {
+        this.hospitalService.getHospital().subscribe(res => {
+          const encontrados = res.filter(r => r.idHospital === id);
+          this.listaHospitaisSelecionados.push(...encontrados);
+        });
+
+      } else {
+        alert('Item já adicionado a lista')
+      }
+    }
+  } carregarDadosSelecionado() {
     if (this.profissionalSelecionado) {
       this.id = this.profissionalSelecionado.idProfissional;
-      this.idHospital = this.profissionalSelecionado.idHospital;
       this.nome = this.profissionalSelecionado.nome;
       this.email = this.profissionalSelecionado.email;
       this.cpf = this.profissionalSelecionado.cpf;
@@ -145,77 +181,76 @@ export class GerenciarUsuarioComponent {
           }
         });
 
+
       }
+      // Exibir lista de hospitais que o usuário tem acesso:
+      this.hosProfService.buscarHosProfIdProfissional(this.id).subscribe({
+        next: (res) => {
+          this.listaHosProfs = res ?? [];
+
+          this.listaHospitaisAdicionados = this.listaHosProfs.map(h => h.idhospital);
+
+          this.listaHospitaisAdd();
+        },
+        error: (err) => console.error('Erro ao buscar HosProf:', err)
+      })
+
       this.status = this.profissionalSelecionado.status
       if (this.status === true) this.msgStatus = "Status: Ativo";
       else this.msgStatus = "Status: Desativado";
 
-      this.buscarHospitalId(this.profissionalSelecionado.idHospital);
-
     }
 
-  }
-  buscarHospitalId(id: string) {
-    this.hospitalService.buscarHospitalId(id)
-      .subscribe(hospital => {
-        this.nomeHospital = hospital?.razaosocial || '';
-      });
+  } async salvar() {
+  const idAtual = this.profissionalSelecionado?.idProfissional ?? undefined;
 
-  }
-  selecionarHospital(id: string) {
-    this.idHospital = id;
-    this.buscarHospitalId(id);
-    // console.log("Id: ", this.idHospital, "Razao: ", this.nomeHospital)
-    this.hosp = !this.hosp;
-  }
-  async salvar() {
-    const validacao = await this.validationService.validationProfissional(
-      this.idHospital,
-      this.cpf,
-      this.senha,
-      this.nome,
-      this.email,
-      this.profissional,
-      this.codigo,
-      this.estado
-    );
+  // 1) Campos obrigatórios / regras básicas
+  const basica = await this.validationService.validationProfissional(
+    this.cpf, this.senha, this.nome, this.email,
+    this.profissional, this.codigo, this.estado
+  );
+  if (basica.length) { this.mensage = basica; return; }
 
-    if (validacao.length === 0) {
-      if (this.profissionalSelecionado) {
-        console.log('atualizando...');
-        this.atualizarProfissional();
-      } else {
-        const validacaoExisteProfissional = await this.validationService.validationProfAdicionar(this.cpf);
+  // 2) Unicidade de CPF/Email (ignora o próprio registro se idAtual existir)
+  const duplicadosGerais = await this.validationService
+    .validationEmailCpf(this.cpf, this.email, idAtual);
+  if (duplicadosGerais.length) { this.mensage = duplicadosGerais; return; }
 
-        if (validacaoExisteProfissional.length === 0) {
-          console.log('inserindo...');
-          this.inserirProfissional();
-        } else {
-          this.mensage = validacaoExisteProfissional;
-        }
-      }
-    } else {
-      this.mensage = validacao;
-    }
+  // 3) Unicidade específica por tipo
+  if (this.profissional === 'enfermeiro') {
+    const errosEnf = await this.validationService
+      .validationEnfermeiro(this.codigo, idAtual);
+    if (errosEnf.length) { this.mensage = errosEnf; return; }
   }
+
+  if (this.profissional === 'medico') {
+    const errosMed = await this.validationService
+      .validationMedico(this.codigo, idAtual);
+    if (errosMed.length) { this.mensage = errosMed; return; }
+  }
+
+  // 4) Decide inserir ou atualizar
+  if (idAtual) {
+    await this.atualizarProfissional();
+  } else {
+    await this.inserirProfissional();
+  }
+}
+
   listaHospitais() {
     this.hospitalService.getHospital().subscribe(res => {
       this.hospital = res;
-      // console.log('Hospitais: ', this.hospital)
-    })
-  }
-  atualizarProfissional() {
+    });
+  } atualizarProfissional() {
     const conexao = this.conexaoService.getProfissional();
     if (conexao) {
       this.newUsuario.idProfissional = this.profissionalSelecionado!.idProfissional;
-      this.newUsuario.idHospital = this.idHospital;
       this.newUsuario.nome = this.nome;
       this.newUsuario.email = this.email;
       this.newUsuario.cpf = this.cpf;
       this.newUsuario.senha = this.senha;
       this.newUsuario.estado = this.estado;
       this.newUsuario.status = this.status;
-      console.log("Status: ", this.status)
 
       if (this.profissional === 'Administrador' || this.profissional === 'admin') {
         this.newUsuario.admin = true;
@@ -242,25 +277,52 @@ export class GerenciarUsuarioComponent {
         });
       }
     }
-  }
-
-  enviarAtualizacao() {
+  } enviarAtualizacao() {
     this.profissionalService.updateProfissional(this.newUsuario).subscribe({
       next: (res) => {
-        const idUsuario = res.idProfissional;
+
         if (this.profissional === 'medico') this.atualizarMedico();
         if (this.profissional === 'enfermeiro') this.atualizarEnfermeiro();
         alert('Usuário atualizado com sucesso!');
         this.addlog();
-        this.router.navigate(['/usuarios']);
+        this.router.navigate(['/gerenciar-usuario', this.id]);
+
       },
       error: (err) => {
         console.error('Erro ao atualizar profissional:', err);
         alert('Erro ao atualizar usuário!');
       }
     });
-  }
-  atualizarMedico() {
+
+    if (this.listaRetirarHosProfs.length > 0) {
+      for (const hospital of this.listaRetirarHosProfs) {
+        this.hosProfService.getHosProfIdProf(hospital, this.id).subscribe(res => {
+          if (res) {
+            if (res?.id) {
+              this.deleteHosProf(res.id);
+            }
+          }
+        })
+      }
+    }
+    if (this.listaHospitaisSelecionados.length > 0) {
+      for (const hospital of this.listaHospitaisSelecionados) {
+        this.hosProfService.getHosProfIdProf(hospital.idHospital, this.id).subscribe(res => {
+
+          if (!res) {
+            this.newHosProf.idhospital = hospital.idHospital;
+            this.newHosProf.idprofissional = this.id;
+            this.addHosProf();
+
+          } else {
+            console.log('Já adicionado a lista!')
+          }
+        })
+
+      }
+    }
+
+  } atualizarMedico() {
     this.newMedico.idprofissional = this.newUsuario.idProfissional
     this.newMedico.crm = this.codigo;
 
@@ -270,8 +332,7 @@ export class GerenciarUsuarioComponent {
         console.error('Erro ao atualizar medico:', err);
       }
     });
-  }
-  atualizarEnfermeiro() {
+  } atualizarEnfermeiro() {
     this.newEnfermeiro.idprofissional = this.newUsuario.idProfissional;
     this.newEnfermeiro.coren = this.codigo;
 
@@ -282,13 +343,10 @@ export class GerenciarUsuarioComponent {
       }
     });
 
-  }
-
-  inserirProfissional() {
+  } inserirProfissional() {
     const conexao = this.conexaoService.getProfissional();
     if (conexao) {
 
-      this.newUsuario.idHospital = this.idHospital;
       this.newUsuario.nome = this.nome;
       this.newUsuario.email = this.email;
       this.newUsuario.cpf = this.cpf;
@@ -305,6 +363,17 @@ export class GerenciarUsuarioComponent {
           const idUsuario = res.idProfissional
           if (this.profissional === 'medico') this.inserirMedico(idUsuario);
           if (this.profissional === 'enfermeiro') this.inserirEnfermeiro(idUsuario);
+          if (this.profissional !== 'admin') {
+            if (this.listaHospitaisSelecionados.length !== 0) {
+              // listaHospitaisSelecionados
+              for (const hospital of this.listaHospitaisSelecionados) {
+                this.newHosProf.idhospital = hospital.idHospital;
+                this.newHosProf.idprofissional = idUsuario;
+                this.addHosProf();
+
+              }
+            }
+          }
           alert('Usuário adicionado com sucesso!')
           this.addlog();
           this.router.navigate(['/usuarios']);
@@ -317,8 +386,7 @@ export class GerenciarUsuarioComponent {
     }
 
 
-  }
-  inserirMedico(id: string) {
+  } inserirMedico(id: string) {
     if (id !== undefined) {
       this.newMedico.idprofissional = id;
       this.newMedico.crm = this.codigo;
@@ -332,8 +400,7 @@ export class GerenciarUsuarioComponent {
     }
 
 
-  }
-  inserirEnfermeiro(id: string) {
+  } inserirEnfermeiro(id: string) {
     if (id !== undefined) {
       this.newEnfermeiro.idprofissional = id;
       this.newEnfermeiro.coren = this.codigo;
@@ -347,9 +414,7 @@ export class GerenciarUsuarioComponent {
 
     }
 
-  }
-
-  addlog() {
+  } addlog() {
     let msg = '';
     if (this.profissionalSelecionado) {
 
@@ -370,75 +435,25 @@ export class GerenciarUsuarioComponent {
         });
       }
     }
-  }
-  telaAnterior() {
+  } addHosProf() {
+    this.hosProfService.addHosProf(this.newHosProf).subscribe({
+      next: (res) => res,
+      error: (err) => {
+        console.error('Erro ao registrar hosProf:', err);
+      }
+    });
+
+  } deleteHosProf(id: string) {
+    this.hosProfService.deleteHosProf(id).subscribe({
+      next: ((res) => res),
+      error: (err) => {
+        console.error('Erro ao deletar hosprof:', err)
+      }
+    })
+  } telaAnterior() {
     if (this.profissionalSelecionado) this.router.navigate(['/usuarios'])
     else this.router.navigate(['/outras-opcoes'])
 
   }
-  // deletar() {
-  //   const id = this.profissionalSelecionado?.idProfissional;
 
-  //   forkJoin({
-  //     enfermeiros: this.enfermeiroService.getEnfermeiro(),
-  //     medicos: this.medicoService.getMedico()
-  //   }).subscribe(({ enfermeiros, medicos }) => {
-  //     const enfer = enfermeiros.find(r => r.idprofissional === id);
-  //     const med = medicos.find(r => r.idprofissional === id);
-
-
-  //     if (confirm(`Deseja excluir o usuário ${this.profissionalSelecionado?.nome}?`)) {
-  //       if (!this.profissionalSelecionado?.admin && id) {
-
-  //         console.log(enfer, med)
-  //         if (enfer) {
-  //           this.deletarEnfermeiro(id)
-  //         } else if (med) {
-  //           this.deletarMedico(id)
-  //         }
-
-  //         this.deletarUsuario(id);
-
-  //       } else if (id) {
-  //         this.deletarUsuario(id);
-  //       }
-  //       alert('Usuário excluído com sucesso!')
-  //       this.router.navigate(['/usuarios'])
-
-  //     }
-
-  //   });
-  // }
-  // deletarUsuario(id: string) {
-  //   this.profissionalService.deleteProfissional(id).subscribe({
-  //     next: (res) => {
-  //       console.log('Profissional deletado com sucesso');
-  //     },
-  //     error: (err) => {
-  //       console.error('Erro ao deletar profissional:', err);
-
-  //       if (err.status === 500 && err.error?.includes('dados_clinicos')) {
-  //         alert('Não é possível excluir este profissional pois ele possui dados clínicos vinculados.');
-  //       } else {
-  //         alert('Erro ao excluir profissional.');
-  //       }
-  //     }
-  //   });
-  // }
-  // deletarMedico(id: string) {
-  //   this.medicoService.deleteMedico(id).subscribe({
-  //     next: ((res) => res),
-  //     error: (err) => {
-  //       console.error('Erro ao deletar medico:', err)
-  //     }
-  //   })
-  // }
-  // deletarEnfermeiro(id: string) {
-  //   this.enfermeiroService.deleteEnfermeiro(id).subscribe({
-  //     next: ((res) => res),
-  //     error: (err) => {
-  //       console.error('Erro ao deletar enfermeiro:', err)
-  //     }
-  //   })
-  // }
 }

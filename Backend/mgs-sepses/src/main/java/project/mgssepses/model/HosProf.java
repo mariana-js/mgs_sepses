@@ -50,5 +50,4 @@ public class HosProf implements Serializable {
         this.idprofissional = idprofissional;
     }
 
-
 }

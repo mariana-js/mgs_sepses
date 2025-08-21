@@ -25,19 +25,13 @@
         </div>
 
         <form action="post">
-          <div (click)="hosp=!hosp " class="status hospital"> {{nomeHospital}} </div>
-          <div *ngIf="hosp===true && !profissionalSelecionado" >
-            <button *ngFor="let hospitais of hospital" (click)="selecionarHospital(hospitais.idHospital)" type="button">{{hospitais.razaosocial}}</button>
-          </div>
+
 
           <input type="text" placeholder="Nome" [(ngModel)]="nome" name="nome">
 
-
           <div class="email-cpf">
-
             <input class="email" type="text" placeholder="Email" [(ngModel)]="email" name="email">
             <input class="cpf" type="text" placeholder="CPF" [(ngModel)]="cpf" name="cpf">
-
           </div>
 
           <div class="profissional-atuacao">
@@ -66,12 +60,27 @@
             </div>
 
           </div>
-          <div class="botoes">
-            <button (click)="telaAnterior()" type="button">Cancelar</button>
-            <button (click)="salvar()" type="button">Salvar</button>
-          </div>
 
+          <div (click)="hosp=!hosp " class="status hospital"> Adicionar hospital</div>
+
+          <div *ngIf="hosp===true" class="lista-hospitais">
+            <button *ngFor="let hospitais of hospital" (click)="addHospitalnaLista(hospitais.idHospital)"
+              type="button">{{hospitais.razaosocial}}</button>
+          </div>
         </form>
+
+        <div *ngFor="let hospital of listaHospitaisSelecionados" class="lista-hospitais-adicionados">
+
+          <span>{{hospital.razaosocial}} - {{hospital.cnpj}}
+            <span (click)="retirandoHospitaldaLista(hospital.idHospital)"> X </span>
+          </span>
+
+        </div>
+
+        <div class="botoes">
+          <button (click)="telaAnterior()" type="button">Cancelar</button>
+          <button (click)="salvar()" type="button">Salvar</button>
+        </div>
       </div>
 
     </div>

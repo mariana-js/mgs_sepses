@@ -13,9 +13,6 @@ public class ProfissionalDto {
     @JsonProperty("idprofissional")
     private UUID idprofissional;
 
-    @NotNull
-	private UUID idHospital;
-    
     @NotBlank
     private String nome;
 
@@ -42,14 +39,6 @@ public class ProfissionalDto {
 
     public void setIdProfissional(UUID idprofissional) {
         this.idprofissional = idprofissional;
-    }
-
-    public UUID getIdHospital() {
-        return idHospital;
-    }
-
-    public void setIdHospital(UUID idHospital) {
-        this.idHospital = idHospital;
     }
 
     public String getNome() {

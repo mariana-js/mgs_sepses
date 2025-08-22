@@ -20,6 +20,7 @@ public class SecurityConfig {
                 .requestMatchers("/hosprof/**").permitAll()
                 .requestMatchers("/hospital/**").permitAll()
                 .requestMatchers("/paciente/**").permitAll()
+                .requestMatchers("/paciente/dados_clinicos**").permitAll()
                 );
 
         return http.build();

@@ -2,6 +2,7 @@ package project.mgssepses.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -13,7 +14,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "dados_clinicos")
-public class DadosClinicos implements Serializable{
+public class DadosClinicos implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,8 +28,9 @@ public class DadosClinicos implements Serializable{
     @Column(name = "idprofissional", nullable = false)
     private UUID idProfissional;
 
-    @Column(name = "data", nullable = false)
-    private LocalDate data;
+    @Column(name = "data", insertable = false, updatable = false,
+            columnDefinition = "DATE DEFAULT CURRENT_DATE")
+    private LocalDateTime data;
 
     @Column(name = "RELACAOP02FI02", nullable = true)
     private String relacaoP02Fi02;
@@ -87,11 +89,11 @@ public class DadosClinicos implements Serializable{
         this.idProfissional = idProfissional;
     }
 
-    public LocalDate getData() {
+    public LocalDateTime getData() {
         return data;
     }
 
-    public void setData(LocalDate data) {
+    public void setData(LocalDateTime data) {
         this.data = data;
     }
 
@@ -183,6 +185,4 @@ public class DadosClinicos implements Serializable{
         this.bilirrubina = bilirrubina;
     }
 
-
-    
 }

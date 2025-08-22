@@ -1,5 +1,6 @@
 package project.mgssepses.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,9 +19,9 @@ public class SituacaoAdversaService {
         this.situacaoAdversaRepository = situacaoAdversaRepository;
     }
 
-
     @Transactional
     public SituacaoAdversa save(SituacaoAdversa situacaoAdversa){
+        situacaoAdversa.setData(LocalDateTime.now());
         return situacaoAdversaRepository.save(situacaoAdversa);
     }
 

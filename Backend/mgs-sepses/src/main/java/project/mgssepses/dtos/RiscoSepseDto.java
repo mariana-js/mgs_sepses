@@ -1,8 +1,9 @@
 package project.mgssepses.dtos;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.NotBlank;
@@ -16,8 +17,8 @@ public class RiscoSepseDto {
     @NotNull
     private UUID idpaciente;
 
-    @NotNull
-    private LocalDate data;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime data;
 
     @NotBlank
     private String risco;
@@ -38,11 +39,11 @@ public class RiscoSepseDto {
         this.idpaciente = idpaciente;
     }
 
-    public LocalDate getData() {
+    public LocalDateTime getData() {
         return data;
     }
 
-    public void setData(LocalDate data) {
+    public void setData(LocalDateTime data) {
         this.data = data;
     }
 
@@ -54,5 +55,4 @@ public class RiscoSepseDto {
         this.risco = risco;
     }
 
-    
 }

@@ -35,5 +35,4 @@ public class RiscoSepseService {
         riscoSepseRepository.delete(risco);
     }
 
-    // Função para retornar o risco de sepse
 }

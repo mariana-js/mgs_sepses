@@ -2,6 +2,7 @@ package project.mgssepses.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -13,7 +14,8 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "situacao_adversa")
-public class SituacaoAdversa implements Serializable{
+public class SituacaoAdversa implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -26,8 +28,9 @@ public class SituacaoAdversa implements Serializable{
     @Column(name = "idprofissional", nullable = false)
     private UUID idprofissional;
 
-    @Column(name = "data", nullable = false)
-    private LocalDate data;
+    @Column(name = "data", insertable = false, updatable = false,
+            columnDefinition = "DATE DEFAULT CURRENT_DATE")
+    private LocalDateTime data;
 
     @Column(name = "situacao_adversa", nullable = false)
     private String descricaoSituacaoAdversa;
@@ -56,11 +59,11 @@ public class SituacaoAdversa implements Serializable{
         this.idprofissional = idprofissional;
     }
 
-    public LocalDate getData() {
+    public LocalDateTime getData() {
         return data;
     }
 
-    public void setData(LocalDate data) {
+    public void setData(LocalDateTime data) {
         this.data = data;
     }
 
@@ -71,8 +74,5 @@ public class SituacaoAdversa implements Serializable{
     public void setDescricaoSituacaoAdversa(String descricaoSituacaoAdversa) {
         this.descricaoSituacaoAdversa = descricaoSituacaoAdversa;
     }
-    
 
-    
-    
 }

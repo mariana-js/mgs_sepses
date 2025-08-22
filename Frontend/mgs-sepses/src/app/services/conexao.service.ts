@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Profissional } from '../models/profissional';
+import { Hospital } from '../models/hospital';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +8,7 @@ import { Profissional } from '../models/profissional';
 export class ConexaoService {
 
   private profissional: Profissional | null = null;
+  // private hospital: Hospital | null = null;
 
   constructor() {
     // Evita erro ao rodar em SSR

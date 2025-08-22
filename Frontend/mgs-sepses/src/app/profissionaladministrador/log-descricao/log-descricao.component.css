@@ -1,16 +1,3 @@
-.voltar a {
-  text-decoration: none;
-  color: #98AECE;
-}
-
-.voltar {
-  justify-content: left;
-  align-items: left;
-  width: 100%;
-  flex-grow: 1;
-  display: flex;
-}
-
 .pagina-log {
   width: 100%;
   margin: 1rem 0;

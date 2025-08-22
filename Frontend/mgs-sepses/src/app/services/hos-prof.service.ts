@@ -24,7 +24,7 @@ export class HosProfService {
   }
 
   // Traz somente um hosprof
-  getHosProfIdProf(idhospital: string, idprofissional: string): Observable<HosProf | undefined> {
+  getHosProfIdProfHosp(idhospital: string, idprofissional: string): Observable<HosProf | undefined> {
     return this.getHosProf().pipe(
       map((hosprofs: HosProf[]) => hosprofs.find(hosprof => hosprof.idprofissional === idprofissional && hosprof.idhospital === idhospital))
     );

@@ -2,7 +2,7 @@ import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { Enfermeiro } from '../../models/enfermeiro';
 import { HosProf } from '../../models/hos-prof';
@@ -21,7 +21,7 @@ import { ValidationService } from '../../services/validation.service';
 
 @Component({
   selector: 'app-gerenciar-usuario',
-  imports: [CommonModule, FormsModule, HttpClientModule, RouterOutlet, NgIf, NgFor],
+  imports: [CommonModule, FormsModule, HttpClientModule, RouterOutlet, NgIf, NgFor, RouterLink],
   templateUrl: './gerenciar-usuario.component.html',
   styleUrl: './gerenciar-usuario.component.css'
 })
@@ -296,7 +296,7 @@ export class GerenciarUsuarioComponent {
 
     if (this.listaRetirarHosProfs.length > 0) {
       for (const hospital of this.listaRetirarHosProfs) {
-        this.hosProfService.getHosProfIdProf(hospital, this.id).subscribe(res => {
+        this.hosProfService.getHosProfIdProfHosp(hospital, this.id).subscribe(res => {
           if (res) {
             if (res?.id) {
               this.deleteHosProf(res.id);
@@ -307,7 +307,7 @@ export class GerenciarUsuarioComponent {
     }
     if (this.listaHospitaisSelecionados.length > 0) {
       for (const hospital of this.listaHospitaisSelecionados) {
-        this.hosProfService.getHosProfIdProf(hospital.idHospital, this.id).subscribe(res => {
+        this.hosProfService.getHosProfIdProfHosp(hospital.idHospital, this.id).subscribe(res => {
 
           if (!res) {
             this.newHosProf.idhospital = hospital.idHospital;

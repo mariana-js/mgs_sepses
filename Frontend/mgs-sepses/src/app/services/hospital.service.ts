@@ -13,6 +13,13 @@ export class HospitalService {
   getHospital(): Observable<Hospital[]> {
     return this.http.get<Hospital[]>(`${this.api}`);
   }
+
+  // Traz a lista de hospitais
+  buscarListaHospitaisId(idhospital: string): Observable<Hospital[]> {
+    return this.getHospital().pipe(
+      map((hospitais: Hospital[] = []) => hospitais.filter(hosp => hosp.idHospital === idhospital))
+    );
+  }
   buscarHospitalId(id: string): Observable<Hospital | undefined> {
     return this.getHospital().pipe(
       map((hops: Hospital[]) => hops.find(hos => hos.idHospital === id))

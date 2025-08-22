@@ -23,6 +23,22 @@ body {
   width: 600px;
   flex-direction: column;
 }
+/* Footer */
+.voltar a {
+  text-decoration: none;
+  color: #98AECE;
+  cursor: pointer;
+}
+
+.voltar {
+  justify-content: left;
+  align-items: left;
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+}
+
+
 /* CSS Tabelas */
 .campo-pesquisa input{
   border: none;

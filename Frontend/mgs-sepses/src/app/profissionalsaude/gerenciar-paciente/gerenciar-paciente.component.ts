@@ -2,7 +2,7 @@ import { CommonModule, NgIf } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { Log } from '../../models/log';
 import { Paciente } from '../../models/paciente';
 import { ConexaoService } from '../../services/conexao.service';
@@ -12,7 +12,7 @@ import { ValidationService } from '../../services/validation.service';
 
 @Component({
   selector: 'app-gerenciar-paciente',
-  imports: [CommonModule, FormsModule, HttpClientModule, RouterOutlet, NgIf],
+  imports: [CommonModule, FormsModule, HttpClientModule, RouterOutlet, NgIf, RouterLink], 
   templateUrl: './gerenciar-paciente.component.html',
   styleUrl: './gerenciar-paciente.component.css'
 })

@@ -38,6 +38,8 @@ export class LoginComponent {
   ) {
 
   }
+
+
   async login(cpf: string, senha: string) {
     cpf = this.cpf;
     senha = this.senha;

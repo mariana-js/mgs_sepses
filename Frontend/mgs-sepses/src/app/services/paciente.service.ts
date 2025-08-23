@@ -1,8 +1,7 @@
-import { Injectable } from '@angular/core';
-import { v4 as uuidv4 } from 'uuid';
-import { Paciente } from '../models/paciente';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
+import { Paciente } from '../models/paciente';
 @Injectable({
   providedIn: 'root'
 })
@@ -31,7 +30,12 @@ export class PacienteService {
   }
 
   updatePaciente(paciente: Paciente): Observable<Paciente> {
-    return this.http.put<Paciente>(`${this.api}/${paciente.idPaciente}`, paciente);
+    if (!paciente?.idPaciente) {
+      throw new Error('Paciente sem idPaciente para update');
+    }
+    const url = `${this.api}/${paciente.idPaciente}`; // sem barra final extra
+    console.log('PUT URL:', url);
+    return this.http.put<Paciente>(url, paciente);
   }
 
   deletePaciente(id: string): Observable<void> {

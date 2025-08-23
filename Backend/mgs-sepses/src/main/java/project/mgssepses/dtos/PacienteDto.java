@@ -1,6 +1,7 @@
 package project.mgssepses.dtos;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,41 +10,34 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public class PacienteDto {
+
     @JsonProperty("idpaciente")
     private UUID idPaciente;
 
     @NotBlank
-	private String nome;
+    private String nome;
 
     @NotBlank
-	private String cpf;
-    
+    private String cpf;
+
     @NotNull
-	private LocalDate dataNascimento;
+    private LocalDate dataNascimento;
 
     @NotBlank
-	private String sexo;
+    private String sexo;
 
     @NotBlank
-	private String celular1;
+    private String celular1;
 
-	private String celular2;
-    
-    @NotNull
-	private Boolean ativo;
-    
-	private String riscoSepse;
+    private String celular2;
 
     @NotNull
-	private LocalDate dataAlteracao;
+    private Boolean ativo;
 
-    public LocalDate getDataAlteracao() {
-        return dataAlteracao;
-    }
+    private String riscoSepse;
 
-    public void setDataAlteracao(LocalDate dataAlteracao) {
-        this.dataAlteracao = dataAlteracao;
-    }
+    @NotNull
+    private LocalDateTime dataAlteracao;
 
     public UUID getIdPaciente() {
         return idPaciente;
@@ -115,6 +109,14 @@ public class PacienteDto {
 
     public void setRiscoSepse(String riscoSepse) {
         this.riscoSepse = riscoSepse;
+    }
+
+    public LocalDateTime getDataAlteracao() {
+        return dataAlteracao;
+    }
+
+    public void setDataAlteracao(LocalDateTime dataAlteracao) {
+        this.dataAlteracao = dataAlteracao;
     }
 
 }

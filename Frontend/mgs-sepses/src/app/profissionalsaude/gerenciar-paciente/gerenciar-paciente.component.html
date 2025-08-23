@@ -4,8 +4,8 @@
 
     <div class="cont-painel">
       <!-- aplicar se paciente selecionado voltar a tela dele selecionado em paciente -->
-      <div class="voltar">
-        <a routerLink="/pacientes">
+      <div class="voltar" (click)=" telaAnterior()">
+        <a>
           << Voltar para a página anterior </a>
       </div>
       <div class="title-gerenciar">
@@ -38,7 +38,7 @@
           </div>
 
           <div class="status">
-            <div (click)="st=!st" class="status">Sexo</div>
+            <div (click)="st=!st" class="status">Status</div>
             <div *ngIf="st===true">
               <button (click)="this.ativo=true; msgStatus = 'Status: Ativo.' " type="button">Ativo</button>
               <button (click)="this.ativo=false; msgStatus = 'Status: Desativado.' " type="button">Desativado</button>

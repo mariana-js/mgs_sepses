@@ -4,4 +4,4 @@ cd D:\Projetos\mgs_sepses\Backend\mgs-sepses
 
 d:
 
-mvn clean install --force
+mvn clean install

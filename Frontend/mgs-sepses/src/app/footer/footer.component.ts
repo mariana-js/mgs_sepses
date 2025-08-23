@@ -9,7 +9,7 @@ import { HospitalService } from '../services/hospital.service';
 
 @Component({
   selector: 'app-footer',
-  imports: [CommonModule, NgFor],
+  imports: [CommonModule, NgFor, NgIf],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.css'
 })

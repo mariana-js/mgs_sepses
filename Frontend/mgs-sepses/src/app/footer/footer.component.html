@@ -1,8 +1,12 @@
 <div>
-  <div >
+  <div>
     <span>Hospital Universitário de Sergipe</span>
-    <div *ngFor="let hospital of hospitais">
-      <span (click)="selecionarHospital(hospital)">{{hospital.nomefantasia}}</span>
+    <div *ngIf="!rotaAtual.includes('login') && !rotaAtual.includes('/recuperar-senha') ">
+
+      <div *ngFor="let hospital of hospitais">
+
+        <span (click)="selecionarHospital(hospital)">{{hospital.nomefantasia}}</span>
+      </div>
     </div>
   </div>
 </div>

@@ -58,4 +58,10 @@ export class PacienteComponent {
     return idade;
 
   }
+
+  dadosPessoais() {
+    // console.log(this.paciente?.idPaciente)
+    this.router.navigate(['/gerenciar-paciente', this.paciente?.idPaciente]);
+  }
+
 }

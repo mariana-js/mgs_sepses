@@ -12,7 +12,7 @@ import { ValidationService } from '../../services/validation.service';
 
 @Component({
   selector: 'app-gerenciar-paciente',
-  imports: [CommonModule, FormsModule, HttpClientModule, RouterOutlet, NgIf, RouterLink], 
+  imports: [CommonModule, FormsModule, HttpClientModule, RouterOutlet, NgIf],
   templateUrl: './gerenciar-paciente.component.html',
   styleUrl: './gerenciar-paciente.component.css'
 })
@@ -83,80 +83,68 @@ export class GerenciarPacienteComponent {
       this.celular1 = this.pacienteSelecionado.celular1
       this.celular2 = this.pacienteSelecionado.celular2
       this.sexo = this.pacienteSelecionado.sexo
-
+      this.dataNascimento = this.pacienteSelecionado.dataNascimento
 
       if (this.ativo) this.msgStatus = "Status: Ativo"
       else this.msgStatus = "Status: Desativado"
+
+      if (this.sexo === 'Feminino') this.msgSexo = "Sexo: Feminino"
+      else if (this.sexo === 'Masculino') this.msgSexo = "Sexo: Masculino"
+
+      // console.log(this.id, this.nome, this.ativo, this.cpf, this.celular1, this.celular2, this.sexo, this.dataNascimento)
     }
   }
   async salvar() {
-
-    // const validacao = await this.validationService.validationHospital(
-    //   this.cnpj,
-    //   this.razaosocial,
-    //   this.nomefantasia
-    // );
-    // if (validacao.length === 0) {
-
-    //   if (this.pacienteSelecionado) {
-    //     console.log('salvando...')
-    //     this.atualizarHospital();
-    //   } else {
-    //     const validacaoExisteHospital = await this.validationService.validationHospAdicionar(this.cnpj)
-
-    //     if (validacaoExisteHospital.length === 0) {
-    //       console.log('inserindo...')
-    //       this.inserirHospital();
-    //     } else {
-    //       this.mensage = validacaoExisteHospital;
-    //     }
-    //   }
-    // } else {
-    //   this.mensage = validacao;
-    // }
+    if (this.pacienteSelecionado) {
+      await this.altPaciente();
+    } else {
+      await this.addPaciente();
+    }
   }
 
-  // atualizarHospital() {
-  //   if (this.hospitalSelecionado) {
-  //     this.newHospital.idHospital = this.hospitalSelecionado?.idHospital;
-  //     this.newHospital.nomefantasia = this.nomefantasia
-  //     this.newHospital.razaosocial = this.razaosocial;
-  //     this.newHospital.cnpj = this.cnpj;
-  //     this.newHospital.ativo = this.status;
+  addPaciente() {
+    this.newPaciente.nome = this.nome;
+    this.newPaciente.ativo = this.ativo;
+    this.newPaciente.cpf = this.cpf;
+    this.newPaciente.sexo = this.sexo;
+    this.newPaciente.celular1 = this.celular1;
+    this.newPaciente.celular2 = this.celular2;
+    this.newPaciente.ativo = this.ativo;
+    if (this.dataNascimento) { this.newPaciente.dataNascimento = this.dataNascimento; }
 
-  //     this.hospitalService.updateHospital(this.newHospital).subscribe({
-  //       next: (res) => {
-  //         alert('Hospital atualizado com sucesso!');
-  //         this.addlog();
-  //         this.router.navigate(['/hospitais']);
-  //       },
-  //       error: (err) => {
-  //         console.error('Erro ao atualizar hospital:', err);
-  //         alert('Erro ao atualizar hospital!');
-  //       }
-  //     });
-  //   }
+    this.pacienteService.addPaciente(this.newPaciente).subscribe({
+      next: (res) => {
+        alert('Paciente adicionado com sucesso!')
+        this.addlog();
+      },
+      error: (err) => {
+        console.error('Erro ao registrar paciente:', err);
+        alert('Erro ao adicionar paciente!')
+      }
+    });
+  }
+  altPaciente() {
+    this.newPaciente.idPaciente = this.id;
+    this.newPaciente.nome = this.nome;
+    this.newPaciente.ativo = this.ativo;
+    this.newPaciente.cpf = this.cpf;
+    this.newPaciente.sexo = this.sexo;
+    this.newPaciente.celular1 = this.celular1;
+    this.newPaciente.celular2 = this.celular2;
+    this.newPaciente.ativo = this.ativo;
+    if (this.dataNascimento) { this.newPaciente.dataNascimento = this.dataNascimento; }
 
-  // }
-
-  // inserirHospital() {
-  //   this.newHospital.nomefantasia = this.nomefantasia;
-  //   this.newHospital.razaosocial = this.razaosocial;
-  //   this.newHospital.cnpj = this.cnpj;
-  //   this.newHospital.ativo = this.status;
-
-  //   this.hospitalService.addHospital(this.newHospital).subscribe({
-  //     next: (res) => {
-  //       alert('Hospital cadastrado com sucesso!')
-  //       this.addlog();
-  //       this.router.navigate(['/hospitais']);
-  //     },
-  //     error: (err) => {
-  //       console.error('Erro ao registrar hospital:', err);
-  //       alert('Erro ao adicionar hospital!')
-  //     }
-  //   })
-  // }
+    this.pacienteService.updatePaciente(this.newPaciente).subscribe({
+     next: (res) => {
+        alert('Paciente atualizado com sucesso!')
+        this.addlog();
+      },
+      error: (err) => {
+        console.error('Erro ao atualizar paciente:', err);
+        alert('Erro ao atualizar paciente!')
+      }
+    });
+  }
   addlog() {
     let msg = '';
 
@@ -171,7 +159,7 @@ export class GerenciarPacienteComponent {
       if (idprofissional) {
         this.newLog.idProfissional = idprofissional.idProfissional;
 
-        this.logService.addlog(this.newLog, idprofissional, msg, new Date(), undefined,undefined ,this.newPaciente).subscribe({
+        this.logService.addlog(this.newLog, idprofissional, msg, new Date(), undefined, undefined, this.newPaciente).subscribe({
           next: ((res) => res),
           error: (err) => {
             console.error('Erro ao registrar log:', err);
@@ -180,13 +168,12 @@ export class GerenciarPacienteComponent {
       }
     }
   }
+  telaAnterior() {
 
+    if (this.pacienteSelecionado) this.router.navigate(['/paciente', this.pacienteSelecionado.idPaciente])
 
-  telaAnterior(){
-
-    this.router.navigate(['/paciente'])
-
-
+    else if (!this.pacienteSelecionado) this.router.navigate(['/pacientes'])
   }
 
 }
+

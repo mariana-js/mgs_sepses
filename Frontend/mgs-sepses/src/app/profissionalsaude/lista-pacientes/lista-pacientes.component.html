@@ -29,7 +29,8 @@
         </thead>
 
         <tbody>
-          <tr (click)="irParaPaciente(pacientes.idPaciente)" *ngFor="let pacientes of (pacientePesquisa.length > 0 ? pacientePesquisa : paciente)">
+          <tr (click)="irParaPaciente(pacientes.idPaciente)" *ngFor="let pacientes of (pacientePesquisa.length > 0 ? pacientePesquisa : paciente)"
+            [ngClass]="{'estavel': pacientes.riscoSepse}">
             <td>{{pacientes.riscoSepse}}</td>
             <td>{{pacientes.nome}}</td>
             <td>{{pacientes.cpf}}</td>

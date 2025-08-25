@@ -1,1 +1,78 @@
-<p>gerenciar-dados-clinicos works!</p>
+<div class="global">
+
+  <div class="cont">
+
+    <div class="cont-painel">
+
+      <div class="voltar" (click)=" telaAnterior()">
+        <a>
+          << Voltar para a página anterior </a>
+      </div>
+      <div class="title-gerenciar">
+        <h2>DADOS CLÍNICOS</h2>
+        <H3>PACIENTE: {{pacienteSelecionado?.nome}} - {{pacienteSelecionado?.cpf}}</H3>
+      </div>
+      <div class="mensagem-erro">
+        <span>{{mensage}}</span>
+      </div>
+      <div class="formulario-gerenciar">
+
+        <form action="post">
+
+          <input class="dataExame" type="date" placeholder="Data Exame" [(ngModel)]="dataExame" name="dataExame">
+          <label for="responsavel">Responsável</label>
+          <input class="responsavel" type="text" placeholder="Responsavel" [(ngModel)]="responsavel" name="responsavel">
+
+          <label for="sistemaRespiratorio">Sistema Respiratório</label>
+          <label for="relacaoP02Fi02">RelacaoP02Fi02</label>
+          <input class="relacaoP02Fi02" type="text" placeholder="RelacaoP02Fi02" [(ngModel)]="relacaoP02Fi02"
+            name="relacaoP02Fi02">
+
+          <label for="ep">EP</label>
+          <input class="ep" type="text" placeholder="EP" [(ngModel)]="ep" name="ep">
+
+          <label for="coagulação">Coagulação</label>
+          <label for="plaquetas">Plaquetas</label>
+          <input class="plaquetas" type="text" placeholder="Plaquetas" [(ngModel)]="plaquetas" name="plaquetas">
+
+          <label for="figado">Fígado</label>
+          <label for="bilirrubina">Bilirrubina</label>
+          <input class="bilirrubina" type="text" placeholder="Bilirrubina" [(ngModel)]="bilirrubina" name="bilirrubina">
+
+          <label for="cardiovascular">Cardiovascular</label>
+          <label for="pam">PAM</label>
+          <input class="pam" type="text" placeholder="PAM" [(ngModel)]="pam" name="pam">
+
+          <label for="dopamina">Dopamina</label>
+          <input class="dopamina" type="text" placeholder="Dopamina" [(ngModel)]="dopamina" name="dopamina">
+
+          <label for="dobutamina">Dobutamina</label>
+          <input class="dobutamina" type="text" placeholder="Dobutamina" [(ngModel)]="dobutamina" name="dobutamina">
+
+          <label for="norepinefrina">Norepinefrina</label>
+          <input class="norepinefrina" type="text" placeholder="Norepinefrina" [(ngModel)]="norepinefrina"
+            name="norepinefrina">
+
+          <label for="">Sistema Nervoso Central</label>
+          <label for="glasgow">Glasgow</label>
+          <input class="glasgow" type="text" placeholder="Glasgow" [(ngModel)]="glasgow" name="glasgow">
+
+          <label for="renal">Renal</label>
+          <Label for="diurese">Diurese</Label>
+          <input class="diurese" type="text" placeholder="Diurese" [(ngModel)]="diurese" name="diurese">
+
+          <Label for="creatinina">Creatinina</Label>
+          <input class="creatinina" type="text" placeholder="Creatinina" [(ngModel)]="creatinina" name="creatinina">
+
+          <div class="botoes">
+            <button (click)="telaAnterior()" type="button">Cancelar</button>
+            <button (click)="salvar()" type="button">Salvar</button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>

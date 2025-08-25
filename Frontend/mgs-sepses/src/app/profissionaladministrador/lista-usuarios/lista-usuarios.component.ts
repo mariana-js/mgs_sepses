@@ -28,6 +28,7 @@ export class ListaUsuariosComponent {
   buscou: boolean = false;
 
   ngOnInit() {
+    
     this.listarUsuarios();
     this.newProfissional = this.newProfissional.sort((a, b) => a.nome.localeCompare(b.nome));
   }
@@ -38,19 +39,19 @@ export class ListaUsuariosComponent {
     private readonly medicoService: MedicoService,
     private readonly router: Router) { }
 
-    listarUsuarios() {
-      this.newProfissional = [];
-      this.newProfissionalOriginal = [];
-      this.profissional = [];
+  listarUsuarios() {
+    this.newProfissional = [];
+    this.newProfissionalOriginal = [];
+    this.profissional = [];
 
-      this.profisionalService.getProfissional().subscribe(resp => {
-        this.profissional = resp;
+    this.profisionalService.getProfissional().subscribe(resp => {
+      this.profissional = resp;
 
-        this.listarProfissionalTI();
-        this.listarProfissionalMedico();
-        this.listarProfissionalEnfermeiro();
-      });
-    }
+      this.listarProfissionalTI();
+      this.listarProfissionalMedico();
+      this.listarProfissionalEnfermeiro();
+    });
+  }
 
 
   listarProfissionalTI() {

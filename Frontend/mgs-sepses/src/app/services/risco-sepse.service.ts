@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { RiscoSepse } from '../models/risco_sepse';
+import { Paciente } from '../models/paciente';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +18,13 @@ export class RiscoSepseService {
     return this.http.get<RiscoSepse[]>(`${this.api}`);
   }
 
+  buscarRiscoPaciente(paciente: Paciente): Observable<RiscoSepse | undefined>{
+    return this.getRiscoSepse().pipe(
+      map((riscos => riscos.find(r => r.idPaciente === paciente.idPaciente && r.data === paciente.dataAlteracao)))
+    )
+  }
+
   addRiscoSepse(risco: RiscoSepse): Observable<RiscoSepse> {
-    // risco.id = uuidv4();
     this.risco.push(risco);
     return this.http.post<RiscoSepse>(this.api, risco);
   }

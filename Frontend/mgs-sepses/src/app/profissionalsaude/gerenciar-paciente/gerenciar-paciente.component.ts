@@ -9,6 +9,8 @@ import { ConexaoService } from '../../services/conexao.service';
 import { LogService } from '../../services/log.service';
 import { PacienteService } from '../../services/paciente.service';
 import { ValidationService } from '../../services/validation.service';
+import { HosPac } from '../../models/hos-pac';
+import { HosPacService } from '../../services/hos-pac.service';
 
 @Component({
   selector: 'app-gerenciar-paciente',
@@ -56,12 +58,19 @@ export class GerenciarPacienteComponent {
     descricao: ''
   }
 
+  newHosPac: HosPac = {
+    id: '',
+    idpaciente: '',
+    idhospital: ''
+  }
+
   constructor(
     private readonly router: Router,
     private readonly pacienteService: PacienteService,
     private readonly conexaoService: ConexaoService,
     private readonly route: ActivatedRoute,
     private readonly logService: LogService,
+    private readonly hospacService: HosPacService,
     private readonly validationService: ValidationService
   ) {
     this.route.params.subscribe(params => {
@@ -73,7 +82,9 @@ export class GerenciarPacienteComponent {
     });
 
   }
-
+  ngOnInit() {
+    console.log(this.conexaoService.getHospital())
+  }
   carregarDadosSelecionado() {
     if (this.pacienteSelecionado) {
       this.id = this.pacienteSelecionado.idPaciente
@@ -90,8 +101,6 @@ export class GerenciarPacienteComponent {
 
       if (this.sexo === 'Feminino') this.msgSexo = "Sexo: Feminino"
       else if (this.sexo === 'Masculino') this.msgSexo = "Sexo: Masculino"
-
-      // console.log(this.id, this.nome, this.ativo, this.cpf, this.celular1, this.celular2, this.sexo, this.dataNascimento)
     }
   }
   async salvar() {
@@ -99,9 +108,11 @@ export class GerenciarPacienteComponent {
       await this.altPaciente();
     } else {
       await this.addPaciente();
-    }
-  }
 
+    }
+
+
+  }
   addPaciente() {
     this.newPaciente.nome = this.nome;
     this.newPaciente.ativo = this.ativo;
@@ -110,12 +121,15 @@ export class GerenciarPacienteComponent {
     this.newPaciente.celular1 = this.celular1;
     this.newPaciente.celular2 = this.celular2;
     this.newPaciente.ativo = this.ativo;
+    this.newPaciente.riscoSepse = '0%';
     if (this.dataNascimento) { this.newPaciente.dataNascimento = this.dataNascimento; }
 
     this.pacienteService.addPaciente(this.newPaciente).subscribe({
       next: (res) => {
         alert('Paciente adicionado com sucesso!')
+        this.addHosPac(res.idPaciente);
         this.addlog();
+        this.router.navigate(['gerenciar-paciente',res.idPaciente])
       },
       error: (err) => {
         console.error('Erro ao registrar paciente:', err);
@@ -135,15 +149,33 @@ export class GerenciarPacienteComponent {
     if (this.dataNascimento) { this.newPaciente.dataNascimento = this.dataNascimento; }
 
     this.pacienteService.updatePaciente(this.newPaciente).subscribe({
-     next: (res) => {
+      next: (res) => {
         alert('Paciente atualizado com sucesso!')
         this.addlog();
+        this.router.navigate(['gerenciar-paciente',res.idPaciente])
       },
       error: (err) => {
         console.error('Erro ao atualizar paciente:', err);
         alert('Erro ao atualizar paciente!')
       }
     });
+  }
+  addHosPac(idPaciente: string) {
+    const idHospital = this.conexaoService.getHospital()?.idHospital;
+    if (idHospital) {
+      this.newHosPac.idhospital = idHospital;
+      this.newHosPac.idpaciente = idPaciente;
+
+      this.hospacService.addHosPac(this.newHosPac).subscribe({
+        next: (res) => res,
+
+        error: (err) => {
+          console.error('Erro ao registrar hosPac:', err);
+        }
+      });
+
+
+    }
   }
   addlog() {
     let msg = '';

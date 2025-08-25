@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { forkJoin, map, Observable, of } from 'rxjs';
 import { Paciente } from '../models/paciente';
+import { HosPac } from '../models/hos-pac';
 @Injectable({
   providedIn: 'root'
 })
@@ -23,6 +24,20 @@ export class PacienteService {
       map((pacientes: Paciente[]) => pacientes.find(paciente => paciente.idPaciente === id))
     );
   }
+
+  // Lista de pacientes do hospac
+  buscarPacientesPorHosPac(hospacs: HosPac[]): Observable<Paciente[]> {
+    if (!hospacs?.length) return of([]);
+
+    // ⚠️ Garanta o mesmo nome de chave usado no front (camelCase recomendado)
+    const uniqueIds = Array.from(new Set(hospacs.map(h => h.idpaciente)));
+
+    return forkJoin(uniqueIds.map(id => this.buscarPacienteID(id))).pipe(
+      // remove undefined e informa ao TypeScript que agora é Paciente
+      map(arr => arr.filter((p): p is Paciente => !!p))
+    );
+  }
+
 
   addPaciente(paciente: Paciente): Observable<Paciente> {
     this.paciente.push(paciente);

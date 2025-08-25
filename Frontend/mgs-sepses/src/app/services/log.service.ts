@@ -67,7 +67,6 @@ export class LogService {
         log.descricao = this.mensagemGerenciarPaciente(mensagem, profissional, paciente);
     }
 
-
     return this.http.post<Log>(this.api, log).pipe(
       tap(response => response),
       catchError(error => {
@@ -76,7 +75,6 @@ export class LogService {
       })
     );
   }
-
 
   // Mensagens
   mensagemAuth(op: string, profissional: Profissional): string {
@@ -98,10 +96,10 @@ export class LogService {
     const data = new Date();
     switch (op) {
       case 'cadastro-usuario':
-        this.resgistro = 'cadastrou o usuário'
+        this.resgistro = 'cadastrou o(a) usuário(a)'
         break;
       case 'atualizar-usuario':
-        this.resgistro = 'alterou o usuário'
+        this.resgistro = 'alterou o(a) usuário(a)'
         break;
       default: alert('erro')
     }
@@ -129,22 +127,22 @@ export class LogService {
     const data = new Date();
     switch (op) {
       case 'cadastro-paciente':
-        this.resgistro = 'cadastrou o paciente'
+        this.resgistro = 'cadastrou o(a) paciente'
         break;
       case 'atualizar-paciente':
-        this.resgistro = 'alterou os dados pessoais do paciente'
+        this.resgistro = 'alterou os dados pessoais do(a) paciente'
         break;
       case 'cadastro-dados-clinicos':
-        this.resgistro = 'cadastrou os dados clinicos do paciente'
+        this.resgistro = 'cadastrou os dados clinicos do(a) paciente'
         break;
       case 'atualizar-dados-clinicos':
-        this.resgistro = 'alterou os dados clinicos do paciente'
+        this.resgistro = 'alterou os dados clinicos do(a) paciente'
         break;
       case 'cadastro-situacao-adversa':
-        this.resgistro = 'cadastrou uma situação adversa do paciente'
+        this.resgistro = 'cadastrou uma situação adversa do(a) paciente'
         break;
       case 'atualizar-situacao-adversa':
-        this.resgistro = 'alterou a situação adversa do paciente'
+        this.resgistro = 'alterou a situação adversa do(a) paciente'
         break;
       default: alert('erro')
     }

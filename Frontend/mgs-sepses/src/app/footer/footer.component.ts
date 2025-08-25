@@ -35,6 +35,12 @@ export class FooterComponent {
   }
   selecionarHospital(hospital: Hospital) {
     this.hospitalSelecionado = hospital;
+    this.conexaoService.setHospital(this.hospitalSelecionado)
+    
+    window.location.reload();
+    //
+    // console.log('SALVOU hospital:', hospital);
+    // console.log('localStorage conexao:', localStorage.getItem('conexao'));
   }
 
   buscarHospitais() {

@@ -7,10 +7,13 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import project.mgssepses.model.DadosClinicos;
+import project.mgssepses.model.Paciente;
 import project.mgssepses.model.RiscoSepse;
 import project.mgssepses.repository.DadosClinicosRepository;
+import project.mgssepses.repository.PacienteRepository;
 
 @Service
 public class DadosClinicosService {
@@ -18,14 +21,17 @@ public class DadosClinicosService {
     final DadosClinicosRepository dadosClinicosRepository;
     private final SofaCalculatorService sofaService;
     private final RiscoSepseService riscoService;
+    private final PacienteRepository pacienteRepository;
 
     public DadosClinicosService(
             DadosClinicosRepository dadosClinicosRepository,
             SofaCalculatorService sofaService,
-            RiscoSepseService riscoService) {
+            RiscoSepseService riscoService,
+            PacienteRepository pacienteRepository) {
         this.dadosClinicosRepository = dadosClinicosRepository;
         this.sofaService = sofaService;
         this.riscoService = riscoService;
+        this.pacienteRepository = pacienteRepository;
     }
 
     @Transactional
@@ -57,6 +63,14 @@ public class DadosClinicosService {
         risco.setData(LocalDateTime.now());
 
         riscoService.save(risco);
+
+        // 3) Atualiza PACIENTE com o risco
+        Paciente paciente = pacienteRepository.findById(saved.getIdPaciente())
+                .orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado"));
+
+        paciente.setRiscoSepse(riscoPercent);
+        paciente.setDataAlteracao(LocalDateTime.now());
+        pacienteRepository.save(paciente);
 
         return saved;
     }

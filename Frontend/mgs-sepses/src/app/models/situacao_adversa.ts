@@ -1,7 +1,7 @@
 export interface SituacaoAdversa {
   id: string;
-  idPaciente: string;
-  idProfissional: string;
-  situacaoAdversa: string;
-  data?: string;
+  idpaciente: string;
+  idprofissional: string;
+  descricaoSituacaoAdversa: string;
+  data: string;
 }

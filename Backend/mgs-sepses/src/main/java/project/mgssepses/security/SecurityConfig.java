@@ -18,6 +18,7 @@ public class SecurityConfig {
                 .requestMatchers("/log/**").permitAll()
                 .requestMatchers("/profissional/**").permitAll()
                 .requestMatchers("/hosprof/**").permitAll()
+                .requestMatchers("/hospac/**").permitAll()
                 .requestMatchers("/hospital/**").permitAll()
                 .requestMatchers("/paciente/**").permitAll()
                 .requestMatchers("/paciente/dados_clinicos**").permitAll()

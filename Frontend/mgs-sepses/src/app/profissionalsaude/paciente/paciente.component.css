@@ -18,6 +18,7 @@
   color: #5985c5;
   font-weight: bolder;
   letter-spacing: 1.5px;
+
 }
 
 .dashboard-dados-others {
@@ -57,6 +58,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .dashboard-dados .dashboard-nome span {

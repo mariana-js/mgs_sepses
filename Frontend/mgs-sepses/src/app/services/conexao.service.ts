@@ -1,45 +1,64 @@
 import { Injectable } from '@angular/core';
-import { Profissional } from '../models/profissional';
 import { Hospital } from '../models/hospital';
-
+import { Profissional } from '../models/profissional';
+type ConexaoData = {
+  profissional: Profissional | null;
+  hospital: Hospital | null;
+};
 @Injectable({
   providedIn: 'root'
 })
 export class ConexaoService {
 
-  private profissional: Profissional | null = null;
-  // private hospital: Hospital | null = null;
+  private conexao: ConexaoData = { profissional: null, hospital: null };
+  private readonly KEY = 'conexao';
 
   constructor() {
-    // Evita erro ao rodar em SSR
     if (this.isBrowser()) {
-      const dadosSalvos = localStorage.getItem('profissional');
-      if (dadosSalvos) {
-        this.profissional = JSON.parse(dadosSalvos);
+      const saved = localStorage.getItem(this.KEY);
+      if (saved) {
+        this.conexao = JSON.parse(saved);
       }
     }
   }
 
-  setProfissional(dados: Profissional): void {
-    this.profissional = dados;
-    if (this.isBrowser()) {
-      localStorage.setItem('profissional', JSON.stringify(dados));
-    }
+  // ---------- Profissional ----------
+  setProfissional(prof: Profissional): void {
+    this.conexao.profissional = prof;
+    this.save();
   }
 
   getProfissional(): Profissional | null {
-    return this.profissional;
+    return this.conexao.profissional;
   }
 
+  // ---------- Hospital ----------
+  setHospital(hosp: Hospital): void {
+    this.conexao.hospital = hosp;
+    this.save();
+  }
+
+  getHospital(): Hospital | null {
+    return this.conexao.hospital;
+  }
+
+  // ---------- Gerais ----------
   limpar(): void {
-    this.profissional = null;
+    this.conexao = { profissional: null, hospital: null };
     if (this.isBrowser()) {
-      localStorage.removeItem('profissional');
+      localStorage.removeItem(this.KEY);
     }
   }
 
   isAutenticado(): boolean {
-    return !!this.profissional;
+    return !!this.conexao.profissional;
+  }
+
+  // ---------- Interno ----------
+  private save(): void {
+    if (this.isBrowser()) {
+      localStorage.setItem(this.KEY, JSON.stringify(this.conexao));
+    }
   }
 
   private isBrowser(): boolean {

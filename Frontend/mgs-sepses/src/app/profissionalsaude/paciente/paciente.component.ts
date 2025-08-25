@@ -3,7 +3,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { Paciente } from '../../models/paciente';
+import { RiscoSepse } from '../../models/risco_sepse';
 import { PacienteService } from '../../services/paciente.service';
+import { RiscoSepseService } from '../../services/risco-sepse.service';
 
 @Component({
   selector: 'app-paciente',
@@ -12,15 +14,19 @@ import { PacienteService } from '../../services/paciente.service';
   styleUrl: './paciente.component.css'
 })
 export class PacienteComponent {
+
   data: Date | undefined;
   idade: number | undefined;
   paciente: Paciente | undefined;
+  riscoSepse: RiscoSepse | undefined;
   status: string = '';
+  risco: string | undefined;
 
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly pacienteService: PacienteService
+    private readonly pacienteService: PacienteService,
+    private readonly riscoService: RiscoSepseService
   ) {
     this.route.params.subscribe(params => {
       const id = params['id'];
@@ -42,7 +48,9 @@ export class PacienteComponent {
   carregarDados(id: string) {
     this.pacienteService.getPaciente().subscribe((resp) => {
       this.paciente = resp.find(res => res.idPaciente === id);
+
     })
+
   }
 
   calcularIdade(dataNascimento: Date): number {
@@ -60,8 +68,13 @@ export class PacienteComponent {
   }
 
   dadosPessoais() {
-    // console.log(this.paciente?.idPaciente)
     this.router.navigate(['/gerenciar-paciente', this.paciente?.idPaciente]);
+  }
+  dadosClinicos() {
+    this.router.navigate(['/dados-clinicos', this.paciente?.idPaciente]);
+  }
+  situacaoAdversa() {
+    this.router.navigate(['/situacao-adversa', this.paciente?.idPaciente]);
   }
 
 }

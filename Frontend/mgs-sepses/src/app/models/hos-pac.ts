@@ -1,5 +1,5 @@
 export interface HosPac {
   id: string;
-  idPaciente: string;
-  idHospital: string;
+  idpaciente: string;
+  idhospital: string;
 }
